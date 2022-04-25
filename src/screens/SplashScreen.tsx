@@ -1,5 +1,9 @@
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
+import { RootStackParamList } from '../../App';
+import { useAppColors } from '../hooks/styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,6 +18,15 @@ const styles = StyleSheet.create({
 });
 
 const SplashScreen = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList, 'Splash'>>();
+
+  const colors = useAppColors();
+
+  setTimeout(() => {
+    navigation.navigate('Home');
+  }, 2000);
+
   return (
     <View style={styles.container}>
       <Image
@@ -21,7 +34,7 @@ const SplashScreen = () => {
         source={require('../assets/images/logo-pro.png')}
       />
 
-      <ActivityIndicator size="large" />
+      <ActivityIndicator color={colors.colorPrimary} size="large" />
     </View>
   );
 };

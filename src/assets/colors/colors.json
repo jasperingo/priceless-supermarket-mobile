@@ -1,0 +1,14 @@
+{
+  "colorPrimary": "rgb(255, 163, 51)",
+  "colorSecondary": "rgb(67, 67, 214)",
+  "colorBackground": "rgb(230, 230, 230)",
+  "colorSurface": "rgb(255, 255, 255)",
+  "colorOnPrimary": "rgb(255, 255, 255)",
+  "colorOnSecondary": "rgb(255, 255, 255)",
+  "colorOnBackground": "rgb(0, 0, 0)",
+  "colorOnSurface": "rgb(0, 0, 0)",
+  "colorError": "rgb(220, 20, 60)",
+  "colorLink": "rgb(30, 144, 255)",
+  "colorGray": "rgb(128, 128, 128)",
+  "colorLightGray": "rgb(230, 230, 230)"
+}
