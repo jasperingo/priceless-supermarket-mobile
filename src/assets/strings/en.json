@@ -10,6 +10,16 @@
 
   "Products": "Products",
 
-  "Categories": "Categories"
+  "Categories": "Categories",
+
+  "First_name": "First name",
+
+  "Last_name": "Last name",
+
+  "Email": "Email",
+
+  "Phone_number": "Phone number",
+
+  "Password": "Password"
 
 }

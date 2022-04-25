@@ -1,23 +1,18 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import {
-  createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerContentComponentProps,
-} from '@react-navigation/drawer';
+import { StyleSheet, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchForm from '../components/form/SearchForm';
 import { useTranslation } from 'react-i18next';
-import LandingScreen from './LandingScreen';
 import {
   AppColors,
   AppDimensions,
   useAppColors,
-  useAppDimensions,
   useAppStyles,
 } from '../hooks/styles';
-import { SignUpScreen, SignInScreen } from '../customer';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import ProductsScreen from '../product';
+import CategoriesScreen from '../category';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
 const getStyles = (Colors: AppColors, Dimensions: AppDimensions) =>
   StyleSheet.create({
@@ -29,101 +24,57 @@ const getStyles = (Colors: AppColors, Dimensions: AppDimensions) =>
       marginTop: 100,
     },
 
-    headerLeft: {
-      color: Colors.colorSecondary,
-      padding: Dimensions.xxSmall,
-      fontSize: Dimensions.xxLarge,
-      marginLeft: Dimensions.small,
+    header: {
+      flexDirection: 'row',
+      padding: Dimensions.xSmall,
+      backgroundColor: Colors.colorSurface,
     },
 
-    headerRight: {
+    headerIcon: {
       color: Colors.colorSecondary,
       padding: Dimensions.xxSmall,
       fontSize: Dimensions.xxLarge,
-      marginRight: Dimensions.small,
+      marginLeft: Dimensions.xSmall,
     },
   });
 
-export type HomeDrawerNavParamList = {
-  Landing: undefined;
-  SignUp: undefined;
-  SignIn: undefined;
-};
-
-const Drawer = createDrawerNavigator();
-
-const CustomDrawerContent = (props: DrawerContentComponentProps) => {
+export const useHomeScreenOptions = () => {
   const styles = useAppStyles(getStyles);
-
-  return (
-    <DrawerContentScrollView
-      {...props}
-      style={styles.drawer}
-      contentContainerStyle={styles.drawerContent}>
-      <DrawerItemList {...props} />
-    </DrawerContentScrollView>
-  );
+  return (): NativeStackNavigationOptions => ({
+    header: ({ navigation }) => (
+      <View style={styles.header}>
+        <SearchForm />
+        <Ionicons name="cart" style={styles.headerIcon} />
+        <Ionicons
+          name="person"
+          style={styles.headerIcon}
+          onPress={() => navigation.navigate('Customer')}
+        />
+      </View>
+    ),
+  });
 };
+
+const Tab = createMaterialTopTabNavigator();
 
 const HomeScreen = () => {
-  const { t } = useTranslation();
-
   const colors = useAppColors();
 
-  const dimensions = useAppDimensions();
-
-  const styles = useAppStyles(getStyles);
+  const { t } = useTranslation();
 
   return (
-    <Drawer.Navigator
-      initialRouteName="HomeTab"
-      useLegacyImplementation
-      drawerContent={(props: DrawerContentComponentProps) => (
-        <CustomDrawerContent {...props} />
-      )}
+    <Tab.Navigator
       screenOptions={{
-        headerStyle: {
+        tabBarStyle: {
           backgroundColor: colors.colorSurface,
         },
-        headerTintColor: colors.colorSecondary,
-        drawerActiveTintColor: colors.colorSecondary,
-        drawerActiveBackgroundColor: colors.colorPrimary,
-        drawerInactiveTintColor: colors.colorSecondary,
-        drawerInactiveBackgroundColor: colors.colorBackground,
-        drawerItemStyle: {
-          marginBottom: dimensions.large,
-        },
+        tabBarActiveTintColor: colors.colorPrimary,
+        tabBarInactiveTintColor: colors.colorGray,
+        tabBarLabelStyle: { textTransform: 'none', fontWeight: 'bold' },
       }}>
-      <Drawer.Screen
-        name="Landing"
-        component={LandingScreen}
-        options={({ navigation }) => ({
-          headerLeft: () => (
-            <Ionicons
-              name="person"
-              style={styles.headerLeft}
-              onPress={() => navigation.openDrawer()}
-            />
-          ),
-          headerRight: () => (
-            <Ionicons name="cart" style={styles.headerRight} />
-          ),
-          headerTitleContainerStyle: { width: '100%' },
-          headerTitle: () => <SearchForm />,
-          title: t('Home'),
-        })}
-      />
-      <Drawer.Screen
-        name="SignUp"
-        component={SignUpScreen}
-        options={{ title: t('Sign_up') }}
-      />
-      <Drawer.Screen
-        name="SignIn"
-        component={SignInScreen}
-        options={{ title: t('Sign_in') }}
-      />
-    </Drawer.Navigator>
+      <Tab.Screen name={t('Products')} component={ProductsScreen} />
+      <Tab.Screen name={t('Categories')} component={CategoriesScreen} />
+    </Tab.Navigator>
   );
 };
 

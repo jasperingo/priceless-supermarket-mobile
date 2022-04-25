@@ -6,10 +6,9 @@ const getStyles = (Colors: AppColors, Dimensions: AppDimensions) =>
   StyleSheet.create({
     input: {
       height: 40,
-      width: '100%',
+      flexGrow: 1,
       borderWidth: 1,
       borderColor: Colors.colorSecondary,
-      paddingVertical: Dimensions.xxSmall,
       paddingHorizontal: Dimensions.small,
       borderRadius: Dimensions.xxSmall,
       backgroundColor: Colors.colorBackground,

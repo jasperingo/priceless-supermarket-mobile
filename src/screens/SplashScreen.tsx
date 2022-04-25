@@ -24,7 +24,7 @@ const SplashScreen = () => {
   const colors = useAppColors();
 
   setTimeout(() => {
-    navigation.navigate('Home');
+    navigation.replace('Home');
   }, 2000);
 
   return (

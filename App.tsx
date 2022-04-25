@@ -7,8 +7,9 @@ import { StatusBar, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SplashScreen from './src/screens/SplashScreen';
 import { AppContext } from './src/context';
-import HomeScreen from './src/screens/HomeScreen';
+import HomeScreen, { useHomeScreenOptions } from './src/screens/HomeScreen';
 import { AppColors, useAppColors } from './src/hooks/styles';
+import { SignUpScreen } from './src/customer';
 
 const AppTheme = (Colors: AppColors) => ({
   ...DefaultTheme,
@@ -24,6 +25,7 @@ const AppTheme = (Colors: AppColors) => ({
 export type RootStackParamList = {
   Splash: undefined;
   Home: undefined;
+  Customer: undefined;
 };
 
 const Stack = createNativeStackNavigator();
@@ -33,6 +35,8 @@ const App = () => {
 
   const colors = useAppColors();
 
+  const homeScreenOptions = useHomeScreenOptions();
+
   return (
     <AppContext.Provider value={null}>
       <SafeAreaProvider>
@@ -41,7 +45,10 @@ const App = () => {
           barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         />
         <NavigationContainer theme={AppTheme(colors)}>
-          <Stack.Navigator>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: colors.colorSurface },
+            }}>
             <Stack.Screen
               name="Splash"
               component={SplashScreen}
@@ -50,8 +57,9 @@ const App = () => {
             <Stack.Screen
               name="Home"
               component={HomeScreen}
-              options={{ headerShown: false }}
+              options={homeScreenOptions}
             />
+            <Stack.Screen name="Customer" component={SignUpScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>
