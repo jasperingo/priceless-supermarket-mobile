@@ -24,8 +24,23 @@
 
   "Do_not_have_an_account": "Don't have an account?",
 
-  "Already_have_an_account?": "Already have an account?",
+  "Already_have_an_account": "Already have an account?",
 
-  "Forgot_password": "Forgot password?"
+  "Forgot_password": "Forgot password?",
+
+
+  "_field_required": "This field is required",
+
+  "_email_address_invalid": "This email address is invalid",
+
+  "_phone_number_invalid": "This phone number is invalid",
+
+  "_password_length": "Password cannot be less than 6 characters",
+
+  "Crediential_incorrect": "Crediential incorrect",
+
+  "Not_network_connection": "No network connection",
+
+  "_unknown_error": "Sorry, there was an error."
 
 }

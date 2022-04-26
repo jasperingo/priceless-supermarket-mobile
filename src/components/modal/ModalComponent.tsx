@@ -1,32 +1,29 @@
-import React from 'react';
-import { Alert, Modal, StyleSheet, Text, View } from 'react-native';
-import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
+import React, { ReactNode } from 'react';
+import { Modal, StyleSheet, View } from 'react-native';
+import { AppColors, useAppStyles } from '../../hooks/styles';
 
-const getStyles = (colors: AppColors, dimensions: AppDimensions) =>
+const getStyles = (colors: AppColors) =>
   StyleSheet.create({
-    centeredView: {
+    container: {
       flex: 1,
-      justifyContent: 'center',
       alignItems: 'center',
-      marginTop: 22,
+      justifyContent: 'center',
+      backgroundColor: colors.colorTransparentGray,
     },
   });
 
-const ModalComponent = () => {
+type Props = {
+  children: ReactNode;
+  visible: boolean;
+};
+
+const ModalComponent = ({ children, visible }: Props) => {
   const styles = useAppStyles(getStyles);
 
   return (
-    <View style={styles.centeredView}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={true}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-        }}>
-        <Text>ModalComponent</Text>
-      </Modal>
-    </View>
+    <Modal transparent={true} visible={visible} animationType="slide">
+      <View style={styles.container}>{children}</View>
+    </Modal>
   );
 };
 

@@ -13,8 +13,8 @@ i18n.use(initReactI18next).init({
   },
 });
 
-i18n.on('missingKey', (_, __, key: string) =>
-  console.warn(`MISSING_STRING-KEY: ${key}`),
-);
+// i18n.on('missingKey', (_, __, key: string) =>
+//   console.warn(`MISSING_STRING-KEY: ${key}`),
+// );
 
 export default i18n;

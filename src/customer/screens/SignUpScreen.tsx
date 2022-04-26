@@ -1,21 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,
+  ToastAndroid,
 } from 'react-native';
+import { RootStackParamList } from '../../../App';
 import FormButtonComponent from '../../components/form/FormButtonComponent';
+import HaveAnAccountComponent from '../../components/form/HaveAnAccountComponent';
 import InputComponent from '../../components/form/InputComponent';
+import LoadingModalComponent from '../../components/modal/LoadingModalComponent';
+import { useErrorTextTranslate } from '../../errors/errorTextHook';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
+import useCustomerCreate from '../hooks/customerCreateHook';
 
 const getStyles = (colors: AppColors, dimensions: AppDimensions) =>
   StyleSheet.create({
     container: {
+      minHeight: '100%',
       padding: dimensions.medium,
+      backgroundColor: colors.colorSurface,
     },
 
     containerContent: {
@@ -42,7 +50,49 @@ const getStyles = (colors: AppColors, dimensions: AppDimensions) =>
   });
 
 const SignUpScreen = () => {
+  const errorText = useErrorTextTranslate();
+
   const styles = useAppStyles(getStyles);
+
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList, 'SignUp'>>();
+
+  const [
+    submit,
+    loading,
+    success,
+    error,
+    firstNameError,
+    lastNameError,
+    emailAddressError,
+    phoneNumberError,
+    passwordError,
+  ] = useCustomerCreate();
+
+  const [firstName, setFirstName] = useState('');
+
+  const [lastName, setLastName] = useState('');
+
+  const [emailAddress, setEmailAddress] = useState('');
+
+  const [phoneNumber, setPhoneNumber] = useState('');
+
+  const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    if (error !== null) {
+      ToastAndroid.show(errorText(error), ToastAndroid.LONG);
+    }
+  }, [error, errorText]);
+
+  const onSubmitClicked = () => {
+    submit(firstName, lastName, emailAddress, phoneNumber, password);
+  };
+
+  if (success) {
+    navigation.replace('Home');
+    return null;
+  }
 
   return (
     <KeyboardAvoidingView
@@ -51,26 +101,57 @@ const SignUpScreen = () => {
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.containerContent}>
-        <InputComponent label="First_name" />
-        <InputComponent label="Last_name" />
-        <InputComponent label="Email" />
-        <InputComponent label="Phone_number" />
-        <InputComponent label="Password" />
+        <InputComponent
+          label="First_name"
+          value={firstName}
+          onChangeText={setFirstName}
+          error={firstNameError}
+        />
+
+        <InputComponent
+          label="Last_name"
+          value={lastName}
+          onChangeText={setLastName}
+          error={lastNameError}
+        />
+
+        <InputComponent
+          label="Email"
+          value={emailAddress}
+          onChangeText={setEmailAddress}
+          error={emailAddressError}
+          keyboardType="email-address"
+        />
+
+        <InputComponent
+          label="Phone_number"
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
+          error={phoneNumberError}
+          keyboardType="phone-pad"
+        />
+
+        <InputComponent
+          label="Password"
+          password={true}
+          value={password}
+          onChangeText={setPassword}
+          error={passwordError}
+        />
 
         <Text style={styles.tos}>
           By signing up, you agree to our terms of service
         </Text>
 
-        <FormButtonComponent />
+        <FormButtonComponent text="Sign_up" action={onSubmitClicked} />
 
-        <View style={styles.haveAnAccount}>
-          <Text style={styles.haveAnAccountQuestion}>
-            Already have an account?{' '}
-          </Text>
-          <TouchableOpacity>
-            <Text style={styles.haveAnAccountAction}>Sign in.</Text>
-          </TouchableOpacity>
-        </View>
+        <HaveAnAccountComponent
+          buttonText="Sign_in"
+          question="Already_have_an_account"
+          action={() => navigation.navigate('SignIn')}
+        />
+
+        <LoadingModalComponent visible={loading} />
       </ScrollView>
     </KeyboardAvoidingView>
   );

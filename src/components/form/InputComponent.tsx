@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ErrorCode from '../../errors/ErrorCode';
+import useErrorText from '../../errors/errorTextHook';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 
 const getStyles = (colors: AppColors, dimensions: AppDimensions) =>
@@ -44,18 +45,24 @@ const getStyles = (colors: AppColors, dimensions: AppDimensions) =>
 
 type Props = {
   label: string;
-  error: ErrorCode | null;
+  error?: ErrorCode | null;
+  value?: string;
   password?: boolean;
   keyboardType?: KeyboardTypeOptions | undefined;
+  onChangeText?: (text: string) => void;
 };
 
 const InputComponent = ({
   label,
   error,
+  value,
   keyboardType,
   password = false,
+  onChangeText,
 }: Props) => {
   const { t } = useTranslation();
+
+  const errorText = useErrorText();
 
   const styles = useAppStyles(getStyles);
 
@@ -67,16 +74,18 @@ const InputComponent = ({
         <Text style={styles.label}>{t(label)}</Text>
         {password && (
           <TouchableOpacity onPress={() => setShown(!shown)}>
-            <Ionicons name={shown ? 'eye-off' : 'eye'} size={25} />
+            <Ionicons name={shown ? 'eye-off' : 'eye'} size={20} />
           </TouchableOpacity>
         )}
       </View>
       <TextInput
         style={styles.input}
         keyboardType={keyboardType}
-        secureTextEntry={!shown}
+        secureTextEntry={password && !shown}
+        value={value}
+        onChangeText={onChangeText}
       />
-      {error && <Text style={styles.error}>error</Text>}
+      {error && <Text style={styles.error}>{t(errorText(error))}</Text>}
     </View>
   );
 };

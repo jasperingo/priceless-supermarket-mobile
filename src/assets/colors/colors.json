@@ -10,5 +10,6 @@
   "colorError": "rgb(220, 20, 60)",
   "colorLink": "rgb(30, 144, 255)",
   "colorGray": "rgb(128, 128, 128)",
-  "colorLightGray": "rgb(230, 230, 230)"
+  "colorLightGray": "rgb(230, 230, 230)",
+  "colorTransparentGray": "rgba(128, 128, 128, 0.5)"
 }
