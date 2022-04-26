@@ -6,10 +6,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SplashScreen from './src/screens/SplashScreen';
-import { AppContext } from './src/context';
+import { AppContext, useAppContextValues } from './src/context';
 import HomeScreen, { useHomeScreenOptions } from './src/screens/HomeScreen';
 import { AppColors, useAppColors } from './src/hooks/styles';
-import { SignUpScreen } from './src/customer';
+import { SignInScreen, SignUpScreen } from './src/customer';
+import { useTranslation } from 'react-i18next';
 
 const AppTheme = (Colors: AppColors) => ({
   ...DefaultTheme,
@@ -25,20 +26,25 @@ const AppTheme = (Colors: AppColors) => ({
 export type RootStackParamList = {
   Splash: undefined;
   Home: undefined;
-  Customer: undefined;
+  SignIn: undefined;
+  SignUp: undefined;
 };
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  const { t } = useTranslation();
+
   const isDarkMode = useColorScheme() === 'dark';
 
   const colors = useAppColors();
 
   const homeScreenOptions = useHomeScreenOptions();
 
+  const contextValue = useAppContextValues();
+
   return (
-    <AppContext.Provider value={null}>
+    <AppContext.Provider value={contextValue}>
       <SafeAreaProvider>
         <StatusBar
           backgroundColor={colors.colorSurface}
@@ -48,6 +54,7 @@ const App = () => {
           <Stack.Navigator
             screenOptions={{
               headerStyle: { backgroundColor: colors.colorSurface },
+              headerTintColor: colors.colorPrimary,
             }}>
             <Stack.Screen
               name="Splash"
@@ -59,7 +66,16 @@ const App = () => {
               component={HomeScreen}
               options={homeScreenOptions}
             />
-            <Stack.Screen name="Customer" component={SignUpScreen} />
+            <Stack.Screen
+              name="SignIn"
+              component={SignInScreen}
+              options={{ title: t('Sign_in') }}
+            />
+            <Stack.Screen
+              name="SignUp"
+              component={SignUpScreen}
+              options={{ title: t('Sign_up') }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>

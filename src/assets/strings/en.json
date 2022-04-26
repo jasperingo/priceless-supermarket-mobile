@@ -20,6 +20,12 @@
 
   "Phone_number": "Phone number",
 
-  "Password": "Password"
+  "Password": "Password",
+
+  "Do_not_have_an_account": "Don't have an account?",
+
+  "Already_have_an_account?": "Already have an account?",
+
+  "Forgot_password": "Forgot password?"
 
 }

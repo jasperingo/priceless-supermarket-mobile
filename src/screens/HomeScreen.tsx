@@ -48,7 +48,7 @@ export const useHomeScreenOptions = () => {
         <Ionicons
           name="person"
           style={styles.headerIcon}
-          onPress={() => navigation.navigate('Customer')}
+          onPress={() => navigation.navigate('SignIn')}
         />
       </View>
     ),
