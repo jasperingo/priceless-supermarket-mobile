@@ -48,7 +48,7 @@ const useCustomerFetch = (): ReturnType => {
 
       try {
         customerService.authToken = authToken;
-        const res = await customerService.read(ID);
+        const res = await customerService.readOne(ID);
 
         const body = (await res.json()) as ApiResponse<Customer>;
 
