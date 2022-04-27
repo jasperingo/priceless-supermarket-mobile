@@ -95,6 +95,11 @@ const SplashScreen = () => {
     if (fetchError !== null) {
       if (fetchError === ErrorCode.UNAUTHORIZED) {
         unsaveToken();
+      } else if (
+        fetchError === ErrorCode.NO_NETWORK_CONNECTION &&
+        isConnected
+      ) {
+        return;
       } else {
         setError(true);
         ToastAndroid.show(errorText(fetchError), ToastAndroid.LONG);
@@ -102,16 +107,14 @@ const SplashScreen = () => {
     } else {
       setError(false);
     }
-  }, [fetchError, removeAuth, errorText, navigate]);
+  }, [isConnected, fetchError, removeAuth, errorText, navigate]);
 
   useEffect(() => {
     const checkForAuth = async () => {
       try {
         const [id, token] = await getAuth();
         if (id !== null && token !== null) {
-          if (isConnected !== null) {
-            fetchCustomer(Number(id), token);
-          }
+          fetchCustomer(Number(id), token);
         } else {
           navigate();
         }
@@ -127,7 +130,7 @@ const SplashScreen = () => {
         checkForAuth();
       }
     }
-  }, [isConnected, error, customer, navigate, getAuth, fetchCustomer]);
+  }, [error, customer, navigate, getAuth, fetchCustomer]);
 
   return (
     <View style={styles.container}>
