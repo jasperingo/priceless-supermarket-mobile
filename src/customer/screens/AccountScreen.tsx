@@ -141,7 +141,7 @@ const AccountScreen = () => {
         <MenuItem
           icon="person"
           text="Profile"
-          action={() => Alert.alert('Profile clicked')}
+          action={() => navigation.navigate('Profile')}
         />
 
         <MenuItem

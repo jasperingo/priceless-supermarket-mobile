@@ -1,6 +1,7 @@
 export { default as SignInScreen } from './screens/SignInScreen';
 export { default as SignUpScreen } from './screens/SignUpScreen';
 export { default as AccountScreen } from './screens/AccountScreen';
+export { default as ProfileScreen } from './screens/ProfileScreen';
 export { default as customerState } from './context/customerState';
 export type { CustomerState } from './context/customerState';
 export { default as customerReducer } from './reducers/customerReducer';

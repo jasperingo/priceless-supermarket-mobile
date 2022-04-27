@@ -13,7 +13,12 @@ import SplashScreen from './src/screens/SplashScreen';
 import { AppContext, useAppContextValues } from './src/context';
 import HomeScreen, { HomeTabParamList } from './src/screens/HomeScreen';
 import { AppColors, useAppColors } from './src/hooks/styles';
-import { AccountScreen, SignInScreen, SignUpScreen } from './src/customer';
+import {
+  AccountScreen,
+  ProfileScreen,
+  SignInScreen,
+  SignUpScreen,
+} from './src/customer';
 import { useTranslation } from 'react-i18next';
 
 const AppTheme = (Colors: AppColors) => ({
@@ -32,6 +37,7 @@ export type RootStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
   Account: undefined;
+  Profile: undefined;
   Home: NavigatorScreenParams<HomeTabParamList>;
 };
 
@@ -79,6 +85,11 @@ const App = () => {
               name="Account"
               component={AccountScreen}
               options={{ title: t('Account') }}
+            />
+            <Stack.Screen
+              name="Profile"
+              component={ProfileScreen}
+              options={{ title: t('Profile') }}
             />
           </Stack.Navigator>
         </NavigationContainer>
