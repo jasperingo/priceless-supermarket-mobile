@@ -33,7 +33,7 @@ const useCustomerFetch = (): ReturnType => {
         return;
       }
 
-      if (isConnected !== null && !isConnected) {
+      if (!isConnected) {
         dispatch?.({
           type: CustomerActionType.ERROR,
           payload: {

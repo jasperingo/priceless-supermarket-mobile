@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNetInfo } from '@react-native-community/netinfo';
 import {
   ActivityIndicator,
   Image,
@@ -62,6 +63,8 @@ const SplashScreen = () => {
 
   const removeAuth = useCustomerAuthUnset();
 
+  const { isConnected } = useNetInfo();
+
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'Splash'>>();
 
@@ -106,7 +109,9 @@ const SplashScreen = () => {
       try {
         const [id, token] = await getAuth();
         if (id !== null && token !== null) {
-          fetchCustomer(Number(id), token);
+          if (isConnected !== null) {
+            fetchCustomer(Number(id), token);
+          }
         } else {
           navigate();
         }
@@ -122,7 +127,7 @@ const SplashScreen = () => {
         checkForAuth();
       }
     }
-  }, [error, customer, navigate, getAuth, fetchCustomer]);
+  }, [isConnected, error, customer, navigate, getAuth, fetchCustomer]);
 
   return (
     <View style={styles.container}>
