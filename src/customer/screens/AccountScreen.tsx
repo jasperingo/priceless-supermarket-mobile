@@ -59,7 +59,8 @@ const getStyle = (colors: AppColors, dimensions: AppDimensions) =>
     menuItem: {
       flexDirection: 'row',
       alignItems: 'center',
-      padding: dimensions.small,
+      paddingHorizontal: dimensions.small,
+      paddingVertical: dimensions.large,
       marginBottom: dimensions.medium,
       borderRadius: dimensions.xxSmall,
       backgroundColor: colors.colorSecondary,
