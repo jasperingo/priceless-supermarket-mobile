@@ -29,6 +29,22 @@ const customerService = {
     });
   },
 
+  update(
+    id: number,
+    form: {
+      first_name?: string;
+      last_name?: string;
+      email_address?: string;
+      phone_number?: string;
+    },
+  ) {
+    return fetch(this.apiUrl(id), {
+      method: 'PATCH',
+      body: JSON.stringify(form),
+      headers: rootService.jsonAndAuthHeader(this.authToken),
+    });
+  },
+
   read(id: number) {
     return fetch(this.apiUrl(id), {
       method: 'GET',

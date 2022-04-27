@@ -19,6 +19,12 @@ export const useErrorText = () => {
         return '_field_required';
       case ErrorCode.CREDENTIALS_INCORRECT:
         return 'Crediential_incorrect';
+      case ErrorCode.NOT_FOUND:
+        return '_not_found';
+      case ErrorCode.UNAUTHORIZED:
+        return 'Authorization_failed';
+      case ErrorCode.PERMISSION_DENIED:
+        return 'Permission_denied';
       case ErrorCode.NO_NETWORK_CONNECTION:
         return 'Not_network_connection';
       case ErrorCode.UNKNOWN:

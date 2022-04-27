@@ -35,8 +35,8 @@ const customerReducer = (
         ...state,
         error: null,
         loading: false,
-        token: payload?.token ?? null,
         customer: payload?.customer ?? null,
+        token: payload?.token ?? state.token,
         customerId: payload?.customerId ?? null,
       };
 

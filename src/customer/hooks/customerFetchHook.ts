@@ -56,6 +56,7 @@ const useCustomerFetch = (): ReturnType => {
           dispatch?.({
             type: CustomerActionType.FETCHED,
             payload: {
+              token: authToken,
               customerId: String(ID),
               customer: plainToInstance(Customer, body.data),
             },

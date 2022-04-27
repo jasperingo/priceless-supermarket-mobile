@@ -41,6 +41,10 @@
   "Proceed": "Proceed",
 
   "Retry": "Retry",
+
+  "Update": "Update",
+
+  "Update_successful": "Update successful",
   
   "Orders": "Orders",
 
@@ -63,6 +67,12 @@
   "_password_length": "Password cannot be less than 6 characters",
 
   "Crediential_incorrect": "Crediential incorrect",
+
+  "Authorization_failed": "Authorization_failed",
+
+  "Permission_denied": "Permission denied",
+
+  "_not_found": "{{ data }} could not be found",
 
   "Not_network_connection": "No network connection",
 
