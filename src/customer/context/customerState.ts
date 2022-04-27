@@ -6,6 +6,7 @@ export type CustomerState = {
   customer: null | Customer;
   loading: boolean;
   error: null | ErrorCode;
+  customerId: null | string;
   dispatch: null | React.Dispatch<CustomerAction>;
 };
 
@@ -26,6 +27,7 @@ const customerState: CustomerState = {
   customer: null,
   loading: false,
   error: null,
+  customerId: null,
   dispatch: null,
 };
 

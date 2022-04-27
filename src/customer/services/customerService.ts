@@ -1,9 +1,9 @@
 import rootService from '../../services';
 
 const customerService = {
-  authToken: null,
+  authToken: '',
 
-  apiUrl(path: string = '') {
+  apiUrl(path: string | number = '') {
     return rootService.apiUrl(`customers/${path}`);
   },
 
@@ -26,6 +26,13 @@ const customerService = {
       method: 'POST',
       body: JSON.stringify(form),
       headers: rootService.jsonContentType,
+    });
+  },
+
+  read(id: number) {
+    return fetch(this.apiUrl(id), {
+      method: 'GET',
+      headers: rootService.jsonAndAuthHeader(this.authToken),
     });
   },
 };

@@ -17,6 +17,7 @@ import LoadingModalComponent from '../../components/modal/LoadingModalComponent'
 import { useErrorTextTranslate } from '../../errors/errorTextHook';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 import useCustomerCreate from '../hooks/customerCreateHook';
+import useCustomerSignIn from '../hooks/customerSignInHook';
 
 const getStyles = (colors: AppColors, dimensions: AppDimensions) =>
   StyleSheet.create({
@@ -69,6 +70,9 @@ const SignUpScreen = () => {
     passwordError,
   ] = useCustomerCreate();
 
+  const [loginSubmit, loginLoading, loginSuccess, loginError] =
+    useCustomerSignIn();
+
   const [firstName, setFirstName] = useState('');
 
   const [lastName, setLastName] = useState('');
@@ -83,16 +87,25 @@ const SignUpScreen = () => {
     if (error !== null) {
       ToastAndroid.show(errorText(error), ToastAndroid.LONG);
     }
-  }, [error, errorText]);
+
+    if (success) {
+      loginSubmit(emailAddress, password);
+    }
+  }, [emailAddress, password, success, error, errorText, loginSubmit]);
+
+  useEffect(() => {
+    if (loginError !== null) {
+      ToastAndroid.show(errorText(loginError), ToastAndroid.LONG);
+    }
+
+    if (loginSuccess) {
+      navigation.navigate('Home', { screen: 'Products' });
+    }
+  }, [loginSuccess, loginError, navigation, errorText]);
 
   const onSubmitClicked = () => {
     submit(firstName, lastName, emailAddress, phoneNumber, password);
   };
-
-  if (success) {
-    navigation.replace('Home');
-    return null;
-  }
 
   return (
     <KeyboardAvoidingView
@@ -151,7 +164,7 @@ const SignUpScreen = () => {
           action={() => navigation.navigate('SignIn')}
         />
 
-        <LoadingModalComponent visible={loading} />
+        <LoadingModalComponent visible={loading || loginLoading} />
       </ScrollView>
     </KeyboardAvoidingView>
   );

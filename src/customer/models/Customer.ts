@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 export default class Customer {
   id?: number;
@@ -16,4 +16,10 @@ export default class Customer {
   phoneNumber?: string;
 
   password?: string;
+
+  status: string;
+
+  @Type(() => Date)
+  @Expose({ name: 'created_at' })
+  createdAt: Date;
 }

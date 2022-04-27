@@ -20,6 +20,7 @@ const ProductsScreen = () => {
     <FlatList
       data={products}
       numColumns={2}
+      keyExtractor={(item, index) => String(index)}
       renderItem={() => <ProductItem />}
       columnWrapperStyle={listColumnStyle.wrapper}
     />

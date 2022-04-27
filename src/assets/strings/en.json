@@ -4,9 +4,17 @@
 
   "Home": "Home",
 
+  "Welcome": "Welcome",
+
+  "Account": "Account",
+
+  "Profile": "Profile",
+
   "Sign_in": "Sign in",
 
   "Sign_up": "Sign up",
+
+  "Sign_out": "Sign out",
 
   "Products": "Products",
 
@@ -28,12 +36,29 @@
 
   "Forgot_password": "Forgot password?",
 
+  "Cancel": "Cancel",
+
+  "Proceed": "Proceed",
+
+  "Retry": "Retry",
+  
+  "Orders": "Orders",
+
+
+  "_confirm_sign_out": "Are you sure you want to sign out?",
+
+  "Confirm_sign_out": "Confirm sign out",
+
 
   "_field_required": "This field is required",
 
   "_email_address_invalid": "This email address is invalid",
 
+  "_email_address_exists": "This email address already exists",
+
   "_phone_number_invalid": "This phone number is invalid",
+
+  "_phone_number_exists": "This phone number already exists",
 
   "_password_length": "Password cannot be less than 6 characters",
 

@@ -11,13 +11,13 @@ const getStyles = (Colors: AppColors, Dimensions: AppDimensions) =>
       borderColor: Colors.colorSecondary,
       paddingHorizontal: Dimensions.small,
       borderRadius: Dimensions.xxSmall,
-      backgroundColor: Colors.colorBackground,
+      backgroundColor: Colors.colorSurface,
     },
   });
 
-const SearchForm = () => {
+const SearchFormComponent = () => {
   const styles = useAppStyles(getStyles);
   return <TextInput style={styles.input} placeholder="Search products" />;
 };
 
-export default SearchForm;
+export default SearchFormComponent;

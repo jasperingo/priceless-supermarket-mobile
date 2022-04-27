@@ -9,8 +9,12 @@ export const useErrorText = () => {
         return '_password_length';
       case ErrorCode.PHONE_NUMBER_INVALID:
         return '_phone_number_invalid';
+      case ErrorCode.PHONE_NUMBER_EXISTS:
+        return '_phone_number_exists';
       case ErrorCode.EMAIL_ADDRESS_INVALID:
         return '_email_address_invalid';
+      case ErrorCode.EMAIL_ADDRESS_EXISTS:
+        return '_email_address_exists';
       case ErrorCode.FIELD_REQUIRED:
         return '_field_required';
       case ErrorCode.CREDENTIALS_INCORRECT:

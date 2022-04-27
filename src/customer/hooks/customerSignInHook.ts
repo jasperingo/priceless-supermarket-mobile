@@ -4,21 +4,26 @@ import ErrorCode from '../../errors/ErrorCode';
 import customerRepository from '../services/customerService';
 import { useCustomerAuthSet } from './customerAuthStorageHook';
 import ApiResponse from '../../dtos/ApiResponse';
-// import useCustomer from './customerHook';
 
 type ReturnType = [
   onSubmit: (email: string, password: string) => Promise<void>,
   loading: boolean,
   success: boolean,
   error: ErrorCode | null,
+  customerId: number,
+  customerAuthToken: string | null,
 ];
 
 const useCustomerSignIn = (): ReturnType => {
-  // const { dispatch } = useCustomer();
-
   const setAuthToken = useCustomerAuthSet();
 
   const { isConnected } = useNetInfo();
+
+  const [customerId, setCustomerId] = useState(0);
+
+  const [customerAuthToken, setCustomerAuthToken] = useState<string | null>(
+    null,
+  );
 
   const [loading, setLoading] = useState(false);
 
@@ -57,6 +62,8 @@ const useCustomerSignIn = (): ReturnType => {
 
       if (res.status === 200) {
         setAuthToken(body.data.id, body.data.access_token);
+        setCustomerAuthToken(body.data.access_token);
+        setCustomerId(body.data.id);
         setSuccess(true);
       } else if (res.status === 401 || res.status === 403) {
         setError(body.error_code);
@@ -71,7 +78,7 @@ const useCustomerSignIn = (): ReturnType => {
     }
   }
 
-  return [onSubmit, loading, success, error];
+  return [onSubmit, loading, success, error, customerId, customerAuthToken];
 };
 
 export default useCustomerSignIn;

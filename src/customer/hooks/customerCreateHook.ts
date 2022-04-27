@@ -102,14 +102,14 @@ const useCustomerCreate = (): ReturnType => {
 
       const body = (await res.json()) as ApiResponse<Customer | BadRequestType>;
 
-      console.log(body);
-
       if (res.status === 201) {
+        const customer = plainToInstance(Customer, body.data);
         setSuccess(true);
         dispatch?.({
           type: CustomerActionType.FETCHED,
           payload: {
-            customer: plainToInstance(Customer, body.data),
+            customer,
+            customerId: String(customer.id),
           },
         });
       } else if (res.status === 400) {

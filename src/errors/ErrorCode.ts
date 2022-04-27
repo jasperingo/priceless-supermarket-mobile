@@ -1,9 +1,15 @@
 export type ErrorCodeType = ErrorCode | null;
 
+export const parseError = (error: any) => {
+  return ErrorCode.hasOwnProperty(error) ? error : ErrorCode.UNKNOWN;
+};
+
 enum ErrorCode {
   //CLIENT
-  NO_NETWORK_CONNECTION = 'NO_NETWORK_CONNECTION',
   UNKNOWN = 'UNKNOWN',
+  NOT_FOUND = 'NOT_FOUND',
+  UNAUTHORIZED = 'UNAUTHORIZED',
+  NO_NETWORK_CONNECTION = 'NO_NETWORK_CONNECTION',
 
   //API
   FIELD_INVALID = 'FIELD_INVALID',

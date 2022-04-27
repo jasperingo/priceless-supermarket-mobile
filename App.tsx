@@ -1,15 +1,19 @@
 import React from 'react';
 import './src/assets/strings/i18next.config';
 import 'react-native-gesture-handler';
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import {
+  DefaultTheme,
+  NavigationContainer,
+  NavigatorScreenParams,
+} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SplashScreen from './src/screens/SplashScreen';
 import { AppContext, useAppContextValues } from './src/context';
-import HomeScreen, { useHomeScreenOptions } from './src/screens/HomeScreen';
+import HomeScreen, { HomeTabParamList } from './src/screens/HomeScreen';
 import { AppColors, useAppColors } from './src/hooks/styles';
-import { SignInScreen, SignUpScreen } from './src/customer';
+import { AccountScreen, SignInScreen, SignUpScreen } from './src/customer';
 import { useTranslation } from 'react-i18next';
 
 const AppTheme = (Colors: AppColors) => ({
@@ -25,9 +29,10 @@ const AppTheme = (Colors: AppColors) => ({
 
 export type RootStackParamList = {
   Splash: undefined;
-  Home: undefined;
   SignIn: undefined;
   SignUp: undefined;
+  Account: undefined;
+  Home: NavigatorScreenParams<HomeTabParamList>;
 };
 
 const Stack = createNativeStackNavigator();
@@ -38,8 +43,6 @@ const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const colors = useAppColors();
-
-  const homeScreenOptions = useHomeScreenOptions();
 
   const contextValue = useAppContextValues();
 
@@ -53,19 +56,15 @@ const App = () => {
         <NavigationContainer theme={AppTheme(colors)}>
           <Stack.Navigator
             screenOptions={{
-              headerStyle: { backgroundColor: colors.colorSurface },
               headerTintColor: colors.colorPrimary,
+              headerStyle: { backgroundColor: colors.colorSurface },
             }}>
             <Stack.Screen
               name="Splash"
               component={SplashScreen}
               options={{ headerShown: false }}
             />
-            <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-              options={homeScreenOptions}
-            />
+            <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen
               name="SignIn"
               component={SignInScreen}
@@ -75,6 +74,11 @@ const App = () => {
               name="SignUp"
               component={SignUpScreen}
               options={{ title: t('Sign_up') }}
+            />
+            <Stack.Screen
+              name="Account"
+              component={AccountScreen}
+              options={{ title: t('Account') }}
             />
           </Stack.Navigator>
         </NavigationContainer>

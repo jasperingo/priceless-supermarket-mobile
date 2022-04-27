@@ -79,11 +79,11 @@ const InputComponent = ({
         )}
       </View>
       <TextInput
+        value={value}
         style={styles.input}
         keyboardType={keyboardType}
-        secureTextEntry={password && !shown}
-        value={value}
         onChangeText={onChangeText}
+        secureTextEntry={password && !shown}
       />
       {error && <Text style={styles.error}>{t(errorText(error))}</Text>}
     </View>

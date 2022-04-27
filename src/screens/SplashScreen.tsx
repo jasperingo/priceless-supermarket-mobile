@@ -1,31 +1,128 @@
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React from 'react';
-import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { RootStackParamList } from '../../App';
-import { useAppColors } from '../hooks/styles';
+import {
+  AppColors,
+  AppDimensions,
+  useAppColors,
+  useAppStyles,
+} from '../hooks/styles';
+import {
+  useCustomerAuthGet,
+  useCustomerAuthUnset,
+  useCustomerFetch,
+} from '../customer';
+import ErrorCode from '../errors/ErrorCode';
+import { useErrorTextTranslate } from '../errors/errorTextHook';
+import { useTranslation } from 'react-i18next';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const getStyles = (colors: AppColors, dimens: AppDimensions) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
 
-  image: {
-    marginBottom: 10,
-  },
-});
+    image: {
+      marginBottom: dimens.xxLarge,
+    },
+
+    retry: {
+      padding: dimens.small,
+      borderRadius: dimens.xxSmall,
+      backgroundColor: colors.colorPrimary,
+    },
+
+    retryText: {
+      color: colors.colorOnPrimary,
+    },
+  });
 
 const SplashScreen = () => {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList, 'Splash'>>();
+  const { t } = useTranslation();
 
   const colors = useAppColors();
 
-  setTimeout(() => {
-    navigation.replace('Home');
-  }, 2000);
+  const styles = useAppStyles(getStyles);
+
+  const errorText = useErrorTextTranslate();
+
+  const getAuth = useCustomerAuthGet();
+
+  const removeAuth = useCustomerAuthUnset();
+
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList, 'Splash'>>();
+
+  const [fetchCustomer, , customer, fetchLoading, fetchError] =
+    useCustomerFetch();
+
+  const [error, setError] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useCallback(
+    () => navigation.replace('Home', { screen: 'Products' }),
+    [navigation],
+  );
+
+  useEffect(() => {
+    const unsaveToken = async () => {
+      setLoading(true);
+      try {
+        await removeAuth();
+      } catch {
+        setError(true);
+      } finally {
+        navigate();
+      }
+    };
+
+    if (fetchError !== null) {
+      if (fetchError === ErrorCode.UNAUTHORIZED) {
+        unsaveToken();
+      } else {
+        setError(true);
+        ToastAndroid.show(errorText(fetchError), ToastAndroid.LONG);
+      }
+    } else {
+      setError(false);
+    }
+  }, [fetchError, removeAuth, errorText, navigate]);
+
+  useEffect(() => {
+    const checkForAuth = async () => {
+      try {
+        const [id, token] = await getAuth();
+        if (id !== null && token !== null) {
+          fetchCustomer(Number(id), token);
+        } else {
+          navigate();
+        }
+      } catch {
+        setError(true);
+      }
+    };
+
+    if (!error) {
+      if (customer !== null) {
+        navigate();
+      } else {
+        checkForAuth();
+      }
+    }
+  }, [error, customer, navigate, getAuth, fetchCustomer]);
 
   return (
     <View style={styles.container}>
@@ -34,7 +131,18 @@ const SplashScreen = () => {
         source={require('../assets/images/logo-pro.png')}
       />
 
-      <ActivityIndicator color={colors.colorPrimary} size="large" />
+      {(fetchLoading || loading) && (
+        <ActivityIndicator color={colors.colorPrimary} size="large" />
+      )}
+
+      {error && (
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.retry}
+          onPress={() => setError(false)}>
+          <Text style={styles.retryText}>{t('Retry')}</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

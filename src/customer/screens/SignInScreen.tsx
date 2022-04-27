@@ -17,8 +17,9 @@ import FormButtonComponent from '../../components/form/FormButtonComponent';
 import HaveAnAccountComponent from '../../components/form/HaveAnAccountComponent';
 import InputComponent from '../../components/form/InputComponent';
 import LoadingModalComponent from '../../components/modal/LoadingModalComponent';
-import useErrorText from '../../errors/errorTextHook';
+import { useErrorTextTranslate } from '../../errors/errorTextHook';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
+import useCustomerFetch from '../hooks/customerFetchHook';
 import useCustomerSignIn from '../hooks/customerSignInHook';
 
 const getStyles = (colors: AppColors, dimensions: AppDimensions) =>
@@ -49,12 +50,16 @@ const SignInScreen = () => {
 
   const styles = useAppStyles(getStyles);
 
-  const errorText = useErrorText();
+  const errorText = useErrorTextTranslate();
 
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'SignIn'>>();
 
-  const [submit, loading, success, error] = useCustomerSignIn();
+  const [submit, loading, success, error, customerId, customerAuthToken] =
+    useCustomerSignIn();
+
+  const [fetchCustomer, , customer, fetchLoading, fetchError] =
+    useCustomerFetch();
 
   const [email, setEmail] = useState('');
 
@@ -62,13 +67,23 @@ const SignInScreen = () => {
 
   useEffect(() => {
     if (error !== null) {
-      ToastAndroid.show(t(errorText(error)), ToastAndroid.LONG);
+      ToastAndroid.show(errorText(error), ToastAndroid.LONG);
     }
 
-    if (success) {
-      ToastAndroid.show('We did it', ToastAndroid.LONG);
+    if (success && customerAuthToken !== null) {
+      fetchCustomer(customerId, customerAuthToken);
     }
-  }, [success, error, errorText, t]);
+  }, [customerId, customerAuthToken, success, error, fetchCustomer, errorText]);
+
+  useEffect(() => {
+    if (fetchError) {
+      ToastAndroid.show(errorText(fetchError), ToastAndroid.LONG);
+    }
+
+    if (customer !== null) {
+      navigation.replace('Home', { screen: 'Products' });
+    }
+  }, [fetchError, customer, navigation, errorText]);
 
   return (
     <KeyboardAvoidingView
@@ -77,7 +92,13 @@ const SignInScreen = () => {
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.containerContent}>
-        <InputComponent label="Email" value={email} onChangeText={setEmail} />
+        <InputComponent
+          label="Email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+        />
+
         <InputComponent
           label="Password"
           password={true}
@@ -102,7 +123,7 @@ const SignInScreen = () => {
           action={() => navigation.navigate('SignUp')}
         />
 
-        <LoadingModalComponent visible={loading} />
+        <LoadingModalComponent visible={loading || fetchLoading} />
       </ScrollView>
     </KeyboardAvoidingView>
   );

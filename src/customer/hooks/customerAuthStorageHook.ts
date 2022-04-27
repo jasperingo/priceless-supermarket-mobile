@@ -26,7 +26,9 @@ export const useCustomerAuthGet = () => {
 
 export const useCustomerAuthUnset = () => {
   return () => {
-    AsyncStorage.removeItem(CUSTOMER_ID);
-    AsyncStorage.removeItem(CUSTOMER_TOKEN);
+    return Promise.all([
+      AsyncStorage.removeItem(CUSTOMER_ID),
+      AsyncStorage.removeItem(CUSTOMER_TOKEN),
+    ]);
   };
 };
