@@ -18,35 +18,36 @@ const getListColumnStyle = (_: any, dimensions: AppDimensions) =>
   });
 
 const CategoriesScreen = () => {
-  const listColumnStyle = useAppStyles(getListColumnStyle);
+  const styles = useAppStyles(getListColumnStyle);
 
   const { categories, loaded, loading, error } = useCategories();
 
-  const [fetchCustomer, unfetchCustomer] = useCategoriesFetch();
+  const [fetchCategory, unfetchCategory] = useCategoriesFetch();
 
   useEffect(() => {
     if (!loaded) {
-      fetchCustomer();
+      fetchCategory();
     }
-  }, [loaded, fetchCustomer]);
+  }, [loaded, fetchCategory]);
 
   return (
     <FlatList
       numColumns={2}
       data={categories}
       refreshing={false}
-      onRefresh={unfetchCustomer}
+      onRefresh={unfetchCategory}
       renderItem={({ item }) => <CategoryItem item={item} />}
-      columnWrapperStyle={listColumnStyle.wrapper}
+      columnWrapperStyle={styles.wrapper}
+      ListFooterComponentStyle={styles.wrapper}
       ListFooterComponent={
         (loading && <LoadingComponent />) ||
         (error === ErrorCode.NO_NETWORK_CONNECTION && (
           <RetryComponent
             text="Not_network_connection"
-            action={fetchCustomer}
+            action={fetchCategory}
           />
         )) ||
-        (error !== null && <RetryComponent action={fetchCustomer} />) ||
+        (error !== null && <RetryComponent action={fetchCategory} />) ||
         (loaded && categories.length === 0 && (
           <EmptyListComponent text="_empty_categories" />
         )) ||

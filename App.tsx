@@ -20,6 +20,7 @@ import {
   SignUpScreen,
 } from './src/customer';
 import { useTranslation } from 'react-i18next';
+import { ProductScreen } from './src/product';
 
 const AppTheme = (Colors: AppColors) => ({
   ...DefaultTheme,
@@ -38,6 +39,7 @@ export type RootStackParamList = {
   SignUp: undefined;
   Account: undefined;
   Profile: undefined;
+  Product: { id: number };
   Home: NavigatorScreenParams<HomeTabParamList>;
 };
 
@@ -90,6 +92,11 @@ const App = () => {
               name="Profile"
               component={ProfileScreen}
               options={{ title: t('Profile') }}
+            />
+            <Stack.Screen
+              name="Product"
+              component={ProductScreen}
+              options={{ title: t('Product') }}
             />
           </Stack.Navigator>
         </NavigationContainer>

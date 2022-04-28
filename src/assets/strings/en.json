@@ -16,8 +16,6 @@
 
   "Sign_out": "Sign out",
 
-  "Products": "Products",
-
   "Categories": "Categories",
 
   "First_name": "First name",
@@ -45,7 +43,24 @@
   "Update": "Update",
 
   "Update_successful": "Update successful",
+
+  "Weight": "Weight",
+
+  "Width": "Width",
+
+  "Height": "Height",
   
+
+  "Product": "Product",
+
+  "Products": "Products",
+
+  "Add_to_cart": "Add to cart",
+
+  "Product_description": "Product description",
+
+  "Product_specifications": "Product specifications",
+
   "Orders": "Orders",
 
 
@@ -53,7 +68,10 @@
 
   "Confirm_sign_out": "Confirm sign out",
 
+
   "_empty_categories": "No category found",
+
+  "_empty_products": "No product found",
 
 
   "_field_required": "This field is required",

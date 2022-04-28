@@ -1,10 +1,12 @@
 import { createContext, useContext, useReducer } from 'react';
-import { categoriesReducer, categoryState } from '../category';
+import { categoriesReducer, categoriesState } from '../category';
 import { customerReducer, customerState } from '../customer';
+import { productsReducer, productsState } from '../product';
 
 export const AppContext = createContext({
   customer: customerState,
-  categories: categoryState,
+  categories: categoriesState,
+  products: productsState,
 });
 
 export const useAppContext = () => {
@@ -19,7 +21,12 @@ export const useAppContextValues = () => {
 
   const [catetories, categoriesDispatch] = useReducer(
     categoriesReducer,
-    categoryState,
+    categoriesState,
+  );
+
+  const [products, productsDispatch] = useReducer(
+    productsReducer,
+    productsState,
   );
 
   return {
@@ -30,6 +37,10 @@ export const useAppContextValues = () => {
     categories: {
       ...catetories,
       dispatch: categoriesDispatch,
+    },
+    products: {
+      ...products,
+      dispatch: productsDispatch,
     },
   };
 };
