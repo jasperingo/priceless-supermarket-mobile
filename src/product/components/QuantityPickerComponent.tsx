@@ -8,14 +8,38 @@ const getStyles = (colors: AppColors, dimens: AppDimensions) =>
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginBottom: dimens.xSmall,
+      marginBottom: dimens.small,
+    },
+
+    quantity: {
+      marginRight: dimens.xSmall,
+      color: colors.colorOnSurface,
+    },
+
+    quantityAvailable: {
+      marginRight: dimens.xSmall,
+      color: colors.colorOnSurface,
+    },
+
+    button: {
+      padding: dimens.xxSmall,
+      marginRight: dimens.xSmall,
+      borderRadius: dimens.medium,
+      backgroundColor: colors.colorPrimary,
+    },
+
+    buttonIcon: {
+      fontSize: dimens.large,
+      color: colors.colorOnPrimary,
     },
   });
 
 const QuantityButton = ({ icon }: { icon: string }) => {
+  const styles = useAppStyles(getStyles);
+
   return (
-    <TouchableOpacity>
-      <Ionicons name={icon} />
+    <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+      <Ionicons name={icon} style={styles.buttonIcon} />
     </TouchableOpacity>
   );
 };
@@ -26,8 +50,9 @@ const QuantityPickerComponent = () => {
   return (
     <View style={styles.container}>
       <QuantityButton icon="remove" />
-      <Text>QuantityPickerComponent</Text>
+      <Text style={styles.quantity}>1</Text>
       <QuantityButton icon="add" />
+      <Text style={styles.quantityAvailable}>20 units available</Text>
     </View>
   );
 };

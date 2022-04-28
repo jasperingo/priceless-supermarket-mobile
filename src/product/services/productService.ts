@@ -17,6 +17,15 @@ const productService = {
       headers: webService.jsonContentType,
     });
   },
+
+  readOne(id: number) {
+    return fetch(this.apiUrl(id), {
+      method: 'GET',
+      headers: !this.authToken
+        ? webService.jsonContentType
+        : webService.jsonAndAuthHeader(this.authToken),
+    });
+  },
 };
 
 export default productService;
