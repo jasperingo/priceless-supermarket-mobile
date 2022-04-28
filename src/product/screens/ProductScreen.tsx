@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RootStackParamList } from '../../../App';
@@ -8,6 +8,14 @@ import { useMoneyFormat } from '../../hooks/formatters';
 import { useTranslation } from 'react-i18next';
 import ProductSpecificationComponent from '../components/ProductSpecificationComponent';
 import QuantityPickerComponent from '../components/QuantityPickerComponent';
+import useProduct from '../hooks/productHook';
+import useProductFetch from '../hooks/productFetchHook';
+import LoadingComponent from '../../components/fetch/LoadingComponent';
+import RetryComponent from '../../components/fetch/RetryComponent';
+import ErrorCode from '../../errors/ErrorCode';
+import { useCustomer } from '../../customer';
+import ErrorComponent from '../../components/fetch/ErrorComponent';
+import { usePhotoUrl } from '../../photo';
 
 const getStyles = (colors: AppColors, dimens: AppDimensions) =>
   StyleSheet.create({
@@ -73,44 +81,111 @@ const ProductScreen = () => {
     params: { id },
   } = useRoute<RouteProp<RootStackParamList, 'Product'>>();
 
+  const { token } = useCustomer();
+
+  const { product, productId, error, loading } = useProduct();
+
+  const [fetchProduct, unfetchProduct] = useProductFetch();
+
+  const uri = usePhotoUrl(product?.photo?.url ?? '');
+
+  const productFetch = useCallback(() => {
+    fetchProduct(id, token);
+  }, [fetchProduct, id, token]);
+
+  useEffect(() => {
+    if ((product !== null || error !== null) && productId !== id) {
+      unfetchProduct();
+    } else if (product === null && error === null) {
+      productFetch();
+    }
+  }, [id, product, error, productId, productFetch, unfetchProduct]);
+
+  const [quantity, setQuantity] = useState(product?.quantity ? 1 : 0);
+
   return (
     <ScrollView>
-      <Image
-        style={styles.image}
-        source={require('../../assets/images/logo-pro.png')}
-      />
-      <View style={styles.dataContainer}>
-        <Text style={styles.name}>Product {id}</Text>
-        <Text style={styles.price}>{moneyFormat(10)}</Text>
-        <QuantityPickerComponent />
-        <TouchableOpacity style={styles.addToCartButton} activeOpacity={0.8}>
-          <Text style={styles.addToCartButtonText}>{t('Add_to_cart')}</Text>
-        </TouchableOpacity>
-      </View>
+      {product !== null && (
+        <>
+          <Image style={styles.image} source={{ uri }} />
+          <View style={styles.dataContainer}>
+            <Text style={styles.name}>{product.name}</Text>
+            <Text style={styles.price}>
+              {moneyFormat(product.price as number)}
+            </Text>
+            <QuantityPickerComponent
+              quantityToOrder={quantity}
+              setQuantityToOrder={setQuantity}
+              quantity={product.quantity as number}
+            />
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={styles.addToCartButton}>
+              <Text style={styles.addToCartButtonText}>{t('Add_to_cart')}</Text>
+            </TouchableOpacity>
+          </View>
 
-      <View style={styles.dataContainer}>
-        <Text style={styles.heading}>{t('Product_description')}</Text>
-        <Text style={styles.description}>
-          Tama's Pride rice is a premium quality Nigerian grown parboiled rice
-          with natural nutrients and healthy value. Put some variety in your
-          meals and infuse rice when planning dishes for the week. You can cook
-          your rice in so many ways and that's what makes them so popular with
-          kids and adults. Rice is a favourite Nigerian staple and is eaten
-          several times a week by most people. Mama's Pride rice is specifically
-          processed and packaged with high quality grains. It is stone free,
-          fast and easy to cook with a end result that is firm and non-sticky.
-          Now you can treat your family to a sumptuous meal at a very affordable
-          cost.
-        </Text>
-      </View>
+          <View style={styles.dataContainer}>
+            <Text style={styles.heading}>{t('Product_description')}</Text>
+            <Text style={styles.description}>{product.description}</Text>
+          </View>
 
-      <View style={styles.dataContainer}>
-        <Text style={styles.heading}>{t('Product_specifications')}</Text>
-        <ProductSpecificationComponent title="Category" body="Snacks" />
-        <ProductSpecificationComponent title="Weight" body="1.23 (kg)" />
-        <ProductSpecificationComponent title="Width" body="20 (cm)" />
-        <ProductSpecificationComponent title="Height" body="30 (cm)" />
-      </View>
+          <View style={styles.dataContainer}>
+            <Text style={styles.heading}>{t('Product_specifications')}</Text>
+            <ProductSpecificationComponent
+              title="Category"
+              body={product.category?.name as string}
+            />
+            {product.barcode && (
+              <ProductSpecificationComponent
+                title="Barcode"
+                body={product.barcode}
+              />
+            )}
+            {product.weight && (
+              <ProductSpecificationComponent
+                title="Weight"
+                body={`${product.weight} (kg)`}
+              />
+            )}
+            {product.width && (
+              <ProductSpecificationComponent
+                title="Width"
+                body={`${product.width} (cm)`}
+              />
+            )}
+            {product.height && (
+              <ProductSpecificationComponent
+                title="Height"
+                body={`${product.height} (cm)`}
+              />
+            )}
+          </View>
+        </>
+      )}
+
+      {product === null && (
+        <View style={styles.dataContainer}>
+          {(loading && <LoadingComponent />) ||
+            (error === ErrorCode.NOT_FOUND && (
+              <ErrorComponent text="_not_found" />
+            )) ||
+            (error === ErrorCode.UNAUTHORIZED && (
+              <ErrorComponent text="Authorization_failed" />
+            )) ||
+            (error === ErrorCode.PERMISSION_DENIED && (
+              <ErrorComponent text="Permission_denied" />
+            )) ||
+            (error === ErrorCode.NO_NETWORK_CONNECTION && (
+              <RetryComponent
+                action={productFetch}
+                text="Not_network_connection"
+              />
+            )) ||
+            (error !== null && <RetryComponent action={productFetch} />) ||
+            null}
+        </View>
+      )}
     </ScrollView>
   );
 };

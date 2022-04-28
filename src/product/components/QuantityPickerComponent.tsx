@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
@@ -6,12 +7,21 @@ import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 const getStyles = (colors: AppColors, dimens: AppDimensions) =>
   StyleSheet.create({
     container: {
-      flexDirection: 'row',
-      alignItems: 'center',
       marginBottom: dimens.small,
     },
 
+    title: {
+      color: colors.colorOnSurface,
+      marginBottom: dimens.xSmall,
+    },
+
+    pickerContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+
     quantity: {
+      fontWeight: 'bold',
       marginRight: dimens.xSmall,
       color: colors.colorOnSurface,
     },
@@ -34,25 +44,62 @@ const getStyles = (colors: AppColors, dimens: AppDimensions) =>
     },
   });
 
-const QuantityButton = ({ icon }: { icon: string }) => {
+const QuantityButton = ({
+  icon,
+  action,
+}: {
+  icon: string;
+  action: () => void;
+}) => {
   const styles = useAppStyles(getStyles);
 
   return (
-    <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+    <TouchableOpacity
+      onPress={action}
+      style={styles.button}
+      activeOpacity={0.8}>
       <Ionicons name={icon} style={styles.buttonIcon} />
     </TouchableOpacity>
   );
 };
 
-const QuantityPickerComponent = () => {
+const QuantityPickerComponent = ({
+  quantity,
+  quantityToOrder,
+  setQuantityToOrder,
+}: {
+  quantity: number;
+  quantityToOrder: number;
+  setQuantityToOrder: (quantity: number) => void;
+}) => {
+  const { t } = useTranslation();
+
   const styles = useAppStyles(getStyles);
+
+  const onQuantityChange = (value: number) => {
+    value = quantityToOrder + value;
+    if (quantity === 0) {
+      setQuantityToOrder(0);
+    } else if (value < 1) {
+      setQuantityToOrder(1);
+    } else if (value > quantity) {
+      setQuantityToOrder(quantity);
+    } else {
+      setQuantityToOrder(value);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <QuantityButton icon="remove" />
-      <Text style={styles.quantity}>1</Text>
-      <QuantityButton icon="add" />
-      <Text style={styles.quantityAvailable}>20 units available</Text>
+      <Text style={styles.title}>{t('Quantity')}</Text>
+      <View style={styles.pickerContainer}>
+        <QuantityButton icon="remove" action={() => onQuantityChange(-1)} />
+        <Text style={styles.quantity}>{quantityToOrder}</Text>
+        <QuantityButton icon="add" action={() => onQuantityChange(1)} />
+        <Text style={styles.quantityAvailable}>
+          {t('unit_available', { count: quantity })}
+        </Text>
+      </View>
     </View>
   );
 };
