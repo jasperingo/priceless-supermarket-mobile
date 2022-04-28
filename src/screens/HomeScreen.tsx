@@ -10,8 +10,8 @@ import {
   useAppStyles,
 } from '../hooks/styles';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import ProductsScreen from '../product';
-import CategoriesScreen from '../category';
+import { ProductsScreen } from '../product';
+import { CategoriesScreen } from '../category';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCustomer } from '../customer';
 import { useNavigation } from '@react-navigation/native';

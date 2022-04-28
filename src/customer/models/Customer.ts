@@ -17,9 +17,9 @@ export default class Customer {
 
   password?: string;
 
-  status: string;
+  status?: string;
 
   @Type(() => Date)
   @Expose({ name: 'created_at' })
-  createdAt: Date;
+  createdAt?: Date;
 }

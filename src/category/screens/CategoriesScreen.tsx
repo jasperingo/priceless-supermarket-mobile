@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
+import EmptyListComponent from '../../components/fetch/EmptyListComponent';
+import LoadingComponent from '../../components/fetch/LoadingComponent';
+import RetryComponent from '../../components/fetch/RetryComponent';
+import ErrorCode from '../../errors/ErrorCode';
 import { AppDimensions, useAppStyles } from '../../hooks/styles';
 import CategoryItem from '../components/CategoryItem';
-
-const categories = [1, 2, 3, 4, 5, 6];
+import useCategoriesFetch from '../hooks/categoriesFetchHook';
+import useCategories from '../hooks/categoriesHook';
 
 const getListColumnStyle = (_: any, dimensions: AppDimensions) =>
   StyleSheet.create({
@@ -16,12 +20,38 @@ const getListColumnStyle = (_: any, dimensions: AppDimensions) =>
 const CategoriesScreen = () => {
   const listColumnStyle = useAppStyles(getListColumnStyle);
 
+  const { categories, loaded, loading, error } = useCategories();
+
+  const [fetchCustomer, unfetchCustomer] = useCategoriesFetch();
+
+  useEffect(() => {
+    if (!loaded) {
+      fetchCustomer();
+    }
+  }, [loaded, fetchCustomer]);
+
   return (
     <FlatList
-      data={categories}
       numColumns={2}
-      renderItem={() => <CategoryItem />}
+      data={categories}
+      refreshing={false}
+      onRefresh={unfetchCustomer}
+      renderItem={({ item }) => <CategoryItem item={item} />}
       columnWrapperStyle={listColumnStyle.wrapper}
+      ListFooterComponent={
+        (loading && <LoadingComponent />) ||
+        (error === ErrorCode.NO_NETWORK_CONNECTION && (
+          <RetryComponent
+            text="Not_network_connection"
+            action={fetchCustomer}
+          />
+        )) ||
+        (error !== null && <RetryComponent action={fetchCustomer} />) ||
+        (loaded && categories.length === 0 && (
+          <EmptyListComponent text="_empty_categories" />
+        )) ||
+        null
+      }
     />
   );
 };

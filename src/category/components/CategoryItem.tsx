@@ -1,6 +1,8 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
+import { usePhotoUrl } from '../../photo';
+import Category from '../models/Category';
 
 const getStyle = (colors: AppColors, dimensions: AppDimensions) =>
   StyleSheet.create({
@@ -17,8 +19,7 @@ const getStyle = (colors: AppColors, dimensions: AppDimensions) =>
       width: 40,
       height: 40,
       marginRight: dimensions.small,
-      borderTopLeftRadius: dimensions.xxSmall,
-      borderTopRightRadius: dimensions.xxSmall,
+      borderRadius: dimensions.xxSmall,
     },
 
     name: {
@@ -27,17 +28,19 @@ const getStyle = (colors: AppColors, dimensions: AppDimensions) =>
     },
   });
 
-const CategoryItem = () => {
+const CategoryItem = ({ item }: { item: Category }) => {
   const styles = useAppStyles(getStyle);
 
+  const uri = usePhotoUrl(item.photo?.url as string);
+
   return (
-    <View style={styles.container}>
-      <Image
-        style={styles.image}
-        source={require('../../assets/images/ba-removebg-preview.png')}
-      />
-      <Text style={styles.name}>Category</Text>
-    </View>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={styles.container}
+      onPress={() => Alert.alert(String(item.id))}>
+      <Image style={styles.image} source={{ uri }} />
+      <Text style={styles.name}>{item.name}</Text>
+    </TouchableOpacity>
   );
 };
 

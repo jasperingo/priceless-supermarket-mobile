@@ -1,6 +1,6 @@
-const API_URL = 'http://10.0.2.2:3000/api/v1/';
+export const API_URL = 'http://10.0.2.2:3000/api/v1/';
 
-const rootService = {
+const webService = {
   jsonContentType: { 'Content-Type': 'application/json' },
 
   apiUrl(path: string) {
@@ -15,4 +15,4 @@ const rootService = {
   },
 };
 
-export default rootService;
+export default webService;
