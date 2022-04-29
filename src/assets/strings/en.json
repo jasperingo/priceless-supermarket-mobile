@@ -16,6 +16,8 @@
 
   "Sign_out": "Sign out",
 
+  "Category": "Category",
+
   "Categories": "Categories",
 
   "First_name": "First name",
@@ -62,6 +64,8 @@
 
   "Products": "Products",
 
+  "Search_products": "Search products",
+
   "Add_to_cart": "Add to cart",
 
   "Product_description": "Product description",
@@ -80,6 +84,8 @@
 
   "_empty_products": "No product found",
 
+
+  "_search_q_length": "Search query must be 3 or more characters",
 
   "_field_required": "This field is required",
 

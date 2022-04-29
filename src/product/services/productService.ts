@@ -26,6 +26,23 @@ const productService = {
         : webService.jsonAndAuthHeader(this.authToken),
     });
   },
+
+  search(q?: string, categoryId?: number, before?: number) {
+    let queryString = `search?limit=${PAGE_LIMIT}`;
+    if (q) {
+      queryString += `&q=${q}`;
+    }
+    if (categoryId) {
+      queryString += `&category_id=${categoryId}`;
+    }
+    if (before) {
+      queryString += `&before=${before}`;
+    }
+    return fetch(this.apiUrl(queryString), {
+      method: 'GET',
+      headers: webService.jsonContentType,
+    });
+  },
 };
 
 export default productService;

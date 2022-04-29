@@ -1,6 +1,5 @@
 import React, { useLayoutEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchFormComponent from '../components/form/SearchFormComponent';
 import { useTranslation } from 'react-i18next';
 import {
@@ -16,6 +15,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCustomer } from '../customer';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../App';
+import HeaderButtonComponent from '../components/header/HeaderButtonComponent';
 
 const getStyles = (Colors: AppColors, Dimensions: AppDimensions) =>
   StyleSheet.create({
@@ -67,12 +67,13 @@ const HomeScreen = () => {
     navigation.setOptions({
       header: () => (
         <View style={styles.header}>
-          <SearchFormComponent />
-          <Ionicons name="cart" style={styles.headerIcon} />
-          <Ionicons
-            name="person"
-            style={styles.headerIcon}
-            onPress={() =>
+          <SearchFormComponent
+            action={q => navigation.navigate('Search', { q, categoryId: null })}
+          />
+          <HeaderButtonComponent icon="cart" action={() => 1} />
+          <HeaderButtonComponent
+            icon="person"
+            action={() =>
               navigation.navigate(customer === null ? 'SignIn' : 'Account')
             }
           />

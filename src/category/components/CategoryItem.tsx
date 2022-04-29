@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 import { usePhotoUrl } from '../../photo';
 import Category from '../models/Category';
@@ -28,16 +28,22 @@ const getStyle = (colors: AppColors, dimensions: AppDimensions) =>
     },
   });
 
-const CategoryItem = ({ item }: { item: Category }) => {
+const CategoryItem = ({
+  item,
+  action,
+}: {
+  item: Category;
+  action: () => void;
+}) => {
   const styles = useAppStyles(getStyle);
 
   const uri = usePhotoUrl(item.photo?.url as string);
 
   return (
     <TouchableOpacity
+      onPress={action}
       activeOpacity={0.8}
-      style={styles.container}
-      onPress={() => Alert.alert(String(item.id))}>
+      style={styles.container}>
       <Image style={styles.image} source={{ uri }} />
       <Text style={styles.name}>{item.name}</Text>
     </TouchableOpacity>

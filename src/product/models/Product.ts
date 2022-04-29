@@ -23,6 +23,7 @@ export default class Product {
 
   height?: number;
 
+  @Type(() => Date)
   @Expose({ name: 'created_at' })
   createdAt?: Date;
 

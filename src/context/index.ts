@@ -4,6 +4,8 @@ import { customerReducer, customerState } from '../customer';
 import {
   productReducer,
   productsReducer,
+  productsSearchReducer,
+  productsSearchState,
   productsState,
   productState,
 } from '../product';
@@ -13,6 +15,7 @@ export const AppContext = createContext({
   categories: categoriesState,
   product: productState,
   products: productsState,
+  productsSearch: productsSearchState,
 });
 
 export const useAppContext = () => {
@@ -37,6 +40,11 @@ export const useAppContextValues = () => {
     productsState,
   );
 
+  const [search, searchDispatch] = useReducer(
+    productsSearchReducer,
+    productsSearchState,
+  );
+
   return {
     customer: {
       ...customer,
@@ -53,6 +61,10 @@ export const useAppContextValues = () => {
     products: {
       ...products,
       dispatch: productsDispatch,
+    },
+    productsSearch: {
+      ...search,
+      dispatch: searchDispatch,
     },
   };
 };

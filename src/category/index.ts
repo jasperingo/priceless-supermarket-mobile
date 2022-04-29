@@ -3,3 +3,4 @@ export { default as categoriesState } from './context/categoriesState';
 export type { CategoriesState } from './context/categoriesState';
 export { default as categoriesReducer } from './reducers/categoriesReducer';
 export { default as Category } from './models/Category';
+export { default as useCategories } from './hooks/categoriesHook';

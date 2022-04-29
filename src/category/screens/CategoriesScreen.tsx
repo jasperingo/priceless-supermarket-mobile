@@ -1,11 +1,11 @@
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import EmptyListComponent from '../../components/fetch/EmptyListComponent';
-import LoadingComponent from '../../components/fetch/LoadingComponent';
-import RetryComponent from '../../components/fetch/RetryComponent';
-import ErrorCode from '../../errors/ErrorCode';
+import { RootStackParamList } from '../../../App';
 import { AppDimensions, useAppStyles } from '../../hooks/styles';
 import CategoryItem from '../components/CategoryItem';
+import CategoryListFooterComponent from '../components/CategoryListFooterComponent';
 import useCategoriesFetch from '../hooks/categoriesFetchHook';
 import useCategories from '../hooks/categoriesHook';
 
@@ -20,7 +20,10 @@ const getListColumnStyle = (_: any, dimensions: AppDimensions) =>
 const CategoriesScreen = () => {
   const styles = useAppStyles(getListColumnStyle);
 
-  const { categories, loaded, loading, error } = useCategories();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
+
+  const { categories, loaded } = useCategories();
 
   const [fetchCategory, unfetchCategory] = useCategoriesFetch();
 
@@ -36,23 +39,20 @@ const CategoriesScreen = () => {
       data={categories}
       refreshing={false}
       onRefresh={unfetchCategory}
-      renderItem={({ item }) => <CategoryItem item={item} />}
+      renderItem={({ item }) => (
+        <CategoryItem
+          item={item}
+          action={() =>
+            navigation.navigate('Search', {
+              q: null,
+              categoryId: item.id as number,
+            })
+          }
+        />
+      )}
       columnWrapperStyle={styles.wrapper}
       ListFooterComponentStyle={styles.wrapper}
-      ListFooterComponent={
-        (loading && <LoadingComponent />) ||
-        (error === ErrorCode.NO_NETWORK_CONNECTION && (
-          <RetryComponent
-            text="Not_network_connection"
-            action={fetchCategory}
-          />
-        )) ||
-        (error !== null && <RetryComponent action={fetchCategory} />) ||
-        (loaded && categories.length === 0 && (
-          <EmptyListComponent text="_empty_categories" />
-        )) ||
-        null
-      }
+      ListFooterComponent={<CategoryListFooterComponent />}
     />
   );
 };

@@ -101,7 +101,7 @@ const ProductScreen = () => {
     }
   }, [id, product, error, productId, productFetch, unfetchProduct]);
 
-  const [quantity, setQuantity] = useState(product?.quantity ? 1 : 0);
+  const [quantity, setQuantity] = useState(1);
 
   return (
     <ScrollView>
