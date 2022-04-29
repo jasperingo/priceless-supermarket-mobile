@@ -22,6 +22,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { ProductScreen } from './src/product';
 import ProductSearchScreen from './src/product/screens/ProductSearchScreen';
+import { CartScreen } from './src/order';
 
 const AppTheme = (Colors: AppColors) => ({
   ...DefaultTheme,
@@ -40,6 +41,7 @@ export type RootStackParamList = {
   SignUp: undefined;
   Account: undefined;
   Profile: undefined;
+  Cart: undefined;
   Product: { id: number };
   Search: { q: string | null; categoryId: number | null };
   Home: NavigatorScreenParams<HomeTabParamList>;
@@ -101,6 +103,11 @@ const App = () => {
               options={{ title: t('Product') }}
             />
             <Stack.Screen name="Search" component={ProductSearchScreen} />
+            <Stack.Screen
+              name="Cart"
+              component={CartScreen}
+              options={{ title: t('Cart') }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>

@@ -74,6 +74,12 @@
 
   "Orders": "Orders",
 
+  "Cart": "Cart",
+
+  "Cart_is_empty": "Cart is empty",
+
+  "Check_out": "Check out",
+
 
   "_confirm_sign_out": "Are you sure you want to sign out?",
 

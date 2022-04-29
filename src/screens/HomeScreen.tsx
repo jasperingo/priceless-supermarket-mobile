@@ -16,6 +16,7 @@ import { useCustomer } from '../customer';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../App';
 import HeaderButtonComponent from '../components/header/HeaderButtonComponent';
+import useCartItemsCount from '../order/hooks/cartItemsCountHook';
 
 const getStyles = (Colors: AppColors, Dimensions: AppDimensions) =>
   StyleSheet.create({
@@ -60,6 +61,8 @@ const HomeScreen = () => {
 
   const { customer } = useCustomer();
 
+  const cartItemsCount = useCartItemsCount();
+
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
 
@@ -70,9 +73,13 @@ const HomeScreen = () => {
           <SearchFormComponent
             action={q => navigation.navigate('Search', { q, categoryId: null })}
           />
-          <HeaderButtonComponent icon="cart" action={() => 1} />
+          <HeaderButtonComponent
+            icon="cart"
+            action={() => navigation.navigate('Cart')}
+          />
           <HeaderButtonComponent
             icon="person"
+            badge={cartItemsCount}
             action={() =>
               navigation.navigate(customer === null ? 'SignIn' : 'Account')
             }
@@ -80,7 +87,7 @@ const HomeScreen = () => {
         </View>
       ),
     });
-  }, [styles, customer, navigation]);
+  }, [styles, customer, navigation, cartItemsCount]);
 
   return (
     <Tab.Navigator
