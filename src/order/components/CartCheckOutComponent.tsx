@@ -1,6 +1,9 @@
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { RootStackParamList } from '../../../App';
 import { useMoneyFormat } from '../../hooks/formatters';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 import useCartItemsTotal from '../hooks/cartItemsTotalHook';
@@ -42,10 +45,16 @@ const CartCheckOutComponent = () => {
 
   const total = useCartItemsTotal();
 
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList, 'Cart'>>();
+
   return (
     <View style={styles.container}>
       <Text style={styles.total}>{moneyFormat(total)}</Text>
-      <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={styles.button}
+        onPress={() => navigation.navigate('DeliveryAddress')}>
         <Text style={styles.buttonText}>{t('Check_out')}</Text>
       </TouchableOpacity>
     </View>

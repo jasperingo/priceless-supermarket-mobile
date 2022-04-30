@@ -23,15 +23,15 @@ const CategoriesScreen = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
 
-  const { categories, loaded } = useCategories();
+  const { categories, loaded, error } = useCategories();
 
   const [fetchCategory, unfetchCategory] = useCategoriesFetch();
 
   useEffect(() => {
-    if (!loaded) {
+    if (!loaded && error === null) {
       fetchCategory();
     }
-  }, [loaded, fetchCategory]);
+  }, [error, loaded, fetchCategory]);
 
   return (
     <FlatList

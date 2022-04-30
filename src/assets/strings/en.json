@@ -36,6 +36,16 @@
 
   "Forgot_password": "Forgot password?",
 
+  "Continue": "Continue",
+
+  "State": "State",
+
+  "City": "City",
+
+  "Street": "Street",
+
+  "Select_an_option": "Select an option",
+
   "Cancel": "Cancel",
 
   "Proceed": "Proceed",
@@ -85,6 +95,8 @@
   "Confirm_remove_item": "Confirm remove item",
 
   "_confirm_remove_cart_item": "Are you sure you want to remove this item?",
+
+  "Delivery_address": "Delivery address",
 
 
   "_confirm_sign_out": "Are you sure you want to sign out?",

@@ -22,12 +22,12 @@ const ProductsScreen = () => {
   const [fetchProducts, unfetchProducts] = useProductsFetch();
 
   useEffect(() => {
-    if (!loaded) {
+    if (!loaded && error === null) {
       fetchProducts();
     }
-  }, [loaded, fetchProducts]);
+  }, [error, loaded, fetchProducts]);
 
-  const productsFetch = () => fetchProducts(products[products.length - 1].id);
+  const productsFetch = () => fetchProducts(products[products.length - 1]?.id);
 
   return (
     <FlatList

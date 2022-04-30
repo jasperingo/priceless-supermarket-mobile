@@ -81,7 +81,7 @@ const ProductSearchScreen = () => {
   }, [styles, navigation, q, categoryId, unfetchProducts]);
 
   useEffect(() => {
-    if (!loaded) {
+    if (!loaded && error === null) {
       fetchProducts(q, categoryId);
     } else if (categoryID !== categoryId || q !== qUery) {
       unfetchProducts();
@@ -89,6 +89,7 @@ const ProductSearchScreen = () => {
   }, [
     q,
     categoryId,
+    error,
     loaded,
     categoryID,
     qUery,
