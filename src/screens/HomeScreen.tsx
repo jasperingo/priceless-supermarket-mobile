@@ -16,7 +16,7 @@ import { useCustomer } from '../customer';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../App';
 import HeaderButtonComponent from '../components/header/HeaderButtonComponent';
-import useCartItemsCount from '../order/hooks/cartItemsCountHook';
+import { useCartItemsCount } from '../order';
 
 const getStyles = (Colors: AppColors, Dimensions: AppDimensions) =>
   StyleSheet.create({

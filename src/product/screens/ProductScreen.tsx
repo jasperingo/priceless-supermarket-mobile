@@ -5,7 +5,14 @@ import React, {
   useState,
 } from 'react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { Image, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { RootStackParamList } from '../../../App';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -24,8 +31,8 @@ import { usePhotoUrl } from '../../photo';
 import useCart from '../../order/hooks/cartHook';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import HeaderButtonComponent from '../../components/header/HeaderButtonComponent';
-import useCartItemsCount from '../../order/hooks/cartItemsCountHook';
-import { CartActionType } from '../../order/context/cartState';
+import { useCartItemsCount } from '../../order';
+import { CartActionType } from '../../order';
 
 const getStyles = (colors: AppColors, dimens: AppDimensions) =>
   StyleSheet.create({
@@ -65,6 +72,7 @@ const getStyles = (colors: AppColors, dimens: AppDimensions) =>
     addToCartButton: {
       alignItems: 'center',
       padding: dimens.medium,
+      marginTop: dimens.xSmall,
       borderRadius: dimens.xxSmall,
       backgroundColor: colors.colorPrimary,
     },

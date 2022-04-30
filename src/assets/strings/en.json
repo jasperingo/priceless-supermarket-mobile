@@ -82,6 +82,10 @@
 
   "Check_out": "Check out",
 
+  "Confirm_remove_item": "Confirm remove item",
+
+  "_confirm_remove_cart_item": "Are you sure you want to remove this item?",
+
 
   "_confirm_sign_out": "Are you sure you want to sign out?",
 

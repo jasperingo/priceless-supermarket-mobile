@@ -6,7 +6,7 @@ import ProductListFooterComponent from '../components/ProductListFooterComponent
 import useProductsFetch from '../hooks/productsFetchHook';
 import useProducts from '../hooks/productsHook';
 
-const getListColumnStyle = (_: any, dimensions: AppDimensions) =>
+const getStyle = (_: any, dimensions: AppDimensions) =>
   StyleSheet.create({
     wrapper: {
       margin: dimensions.xSmall,
@@ -15,7 +15,7 @@ const getListColumnStyle = (_: any, dimensions: AppDimensions) =>
   });
 
 const ProductsScreen = () => {
-  const styles = useAppStyles(getListColumnStyle);
+  const styles = useAppStyles(getStyle);
 
   const { products, loading, loaded, ended, error } = useProducts();
 

@@ -6,3 +6,4 @@ export { default as productsSearchState } from './context/productsSearchState';
 export { default as productReducer } from './reducers/productReducer';
 export { default as productsReducer } from './reducers/productsReducer';
 export { default as productsSearchReducer } from './reducers/productsSearchReducer';
+export { default as QuantityPickerComponent } from './components/QuantityPickerComponent';

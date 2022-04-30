@@ -6,10 +6,6 @@ import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 
 const getStyles = (colors: AppColors, dimens: AppDimensions) =>
   StyleSheet.create({
-    container: {
-      marginBottom: dimens.small,
-    },
-
     title: {
       color: colors.colorOnSurface,
       marginBottom: dimens.xSmall,
@@ -32,7 +28,7 @@ const getStyles = (colors: AppColors, dimens: AppDimensions) =>
     },
 
     button: {
-      padding: dimens.xxSmall,
+      padding: 2,
       marginRight: dimens.xSmall,
       borderRadius: dimens.medium,
       backgroundColor: colors.colorPrimary,
@@ -66,10 +62,12 @@ const QuantityButton = ({
 const QuantityPickerComponent = ({
   quantity,
   quantityToOrder,
+  hideTitle = false,
   setQuantityToOrder,
 }: {
   quantity: number;
   quantityToOrder: number;
+  hideTitle?: boolean;
   setQuantityToOrder: (quantity: number) => void;
 }) => {
   const { t } = useTranslation();
@@ -90,8 +88,8 @@ const QuantityPickerComponent = ({
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{t('Quantity')}</Text>
+    <View>
+      {!hideTitle && <Text style={styles.title}>{t('Quantity')}</Text>}
       <View style={styles.pickerContainer}>
         <QuantityButton icon="remove" action={() => onQuantityChange(-1)} />
         <Text style={styles.quantity}>{quantityToOrder}</Text>
