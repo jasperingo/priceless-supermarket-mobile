@@ -1,6 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { RouteProp, useRoute } from '@react-navigation/native';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { Image, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import { RootStackParamList } from '../../../App';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -16,6 +21,11 @@ import ErrorCode from '../../errors/ErrorCode';
 import { useCustomer } from '../../customer';
 import ErrorComponent from '../../components/fetch/ErrorComponent';
 import { usePhotoUrl } from '../../photo';
+import useCart from '../../order/hooks/cartHook';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import HeaderButtonComponent from '../../components/header/HeaderButtonComponent';
+import useCartItemsCount from '../../order/hooks/cartItemsCountHook';
+import { CartActionType } from '../../order/context/cartState';
 
 const getStyles = (colors: AppColors, dimens: AppDimensions) =>
   StyleSheet.create({
@@ -81,7 +91,14 @@ const ProductScreen = () => {
     params: { id },
   } = useRoute<RouteProp<RootStackParamList, 'Product'>>();
 
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList, 'Product'>>();
+
   const { token } = useCustomer();
+
+  const cartItemsCount = useCartItemsCount();
+
+  const { dispatch: cartDispatch } = useCart();
 
   const { product, productId, error, loading } = useProduct();
 
@@ -101,7 +118,30 @@ const ProductScreen = () => {
     }
   }, [id, product, error, productId, productFetch, unfetchProduct]);
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtonComponent
+          icon="cart"
+          badge={cartItemsCount}
+          action={() => navigation.navigate('Cart')}
+        />
+      ),
+    });
+  }, [styles, navigation, cartItemsCount]);
+
   const [quantity, setQuantity] = useState(1);
+
+  const addToCart = () => {
+    if (product) {
+      cartDispatch?.({
+        type: CartActionType.ITEM_ADDED,
+        payload: { cartItem: { product, quantity } },
+      });
+
+      ToastAndroid.show(t('Product_added_to_cart'), ToastAndroid.LONG);
+    }
+  };
 
   return (
     <ScrollView>
@@ -120,7 +160,8 @@ const ProductScreen = () => {
             />
             <TouchableOpacity
               activeOpacity={0.8}
-              style={styles.addToCartButton}>
+              style={styles.addToCartButton}
+              onPress={addToCart}>
               <Text style={styles.addToCartButtonText}>{t('Add_to_cart')}</Text>
             </TouchableOpacity>
           </View>

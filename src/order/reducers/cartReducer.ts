@@ -7,8 +7,13 @@ const cartReducer = (
   switch (type) {
     case CartActionType.ITEM_ADDED:
       return {
-        ...payload,
         ...state,
+        cart: {
+          ...state.cart,
+          orderItems: payload?.cartItem
+            ? [payload?.cartItem, ...(state.cart?.orderItems ?? [])]
+            : state.cart?.orderItems,
+        },
       };
 
     default:

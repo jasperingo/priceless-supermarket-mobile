@@ -18,7 +18,7 @@ const getStyles = (Colors: AppColors, Dimensions: AppDimensions) =>
 
     badge: {
       top: -8,
-      left: -8,
+      right: -4,
       borderRadius: 100,
       paddingVertical: 2,
       position: 'absolute',
@@ -44,8 +44,8 @@ const HeaderButtonComponent = ({
       onPress={action}
       activeOpacity={0.7}
       style={styles.container}>
-      {badge !== undefined && <Text style={styles.badge}>{badge}</Text>}
       <Ionicons name={icon} style={styles.headerIcon} />
+      {badge !== undefined && <Text style={styles.badge}>{badge}</Text>}
     </TouchableOpacity>
   );
 };

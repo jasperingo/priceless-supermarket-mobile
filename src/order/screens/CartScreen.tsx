@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import EmptyListComponent from '../../components/fetch/EmptyListComponent';
 import CartItemComponent from '../components/CartItemComponent';
 import useCart from '../hooks/cartHook';
@@ -20,7 +20,6 @@ const CartScreen = () => {
       {(cart === null || cart.orderItems?.length === 0) && (
         <EmptyListComponent text="Cart_is_empty" />
       )}
-      <Text>CartScreen</Text>
     </View>
   );
 };

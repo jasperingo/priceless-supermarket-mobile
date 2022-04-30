@@ -75,11 +75,11 @@ const HomeScreen = () => {
           />
           <HeaderButtonComponent
             icon="cart"
+            badge={cartItemsCount}
             action={() => navigation.navigate('Cart')}
           />
           <HeaderButtonComponent
             icon="person"
-            badge={cartItemsCount}
             action={() =>
               navigation.navigate(customer === null ? 'SignIn' : 'Account')
             }
