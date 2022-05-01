@@ -32,7 +32,9 @@ const DeliveryAddressScreen = () => {
   const [street, setStreet] = useState('');
 
   const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList, 'Account'>>();
+    useNavigation<
+      NativeStackNavigationProp<RootStackParamList, 'DeliveryAddress'>
+    >();
 
   const [fetchLocations, locations, loading, error, loaded] =
     useDeliveryLocationsFetch();

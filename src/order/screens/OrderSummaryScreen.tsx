@@ -1,12 +1,18 @@
-import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
+import { RootStackParamList } from '../../../App';
 import FormButtonComponent from '../../components/form/FormButtonComponent';
+import LoadingModalComponent from '../../components/modal/LoadingModalComponent';
+import { useErrorTextTranslate } from '../../errors/errorTextHook';
 import { useMoneyFormat } from '../../hooks/formatters';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 import CartItemComponent from '../components/CartItemComponent';
 import useCart from '../hooks/cartHook';
 import useCartItemsTotal from '../hooks/cartItemsTotalHook';
+import useOrderCreate from '../hooks/orderCreateHook';
 
 const getStyle = (colors: AppColors, dimens: AppDimensions) =>
   StyleSheet.create({
@@ -48,7 +54,58 @@ const OrderSummaryScreen = () => {
 
   const moneyFormat = useMoneyFormat();
 
+  const errorText = useErrorTextTranslate();
+
   const total = useCartItemsTotal();
+
+  const navigation =
+    useNavigation<
+      NativeStackNavigationProp<RootStackParamList, 'OrderSummary'>
+    >();
+
+  const [
+    onSubmit,
+    loading,
+    success,
+    error,
+    orderId,
+    stateError,
+    cityError,
+    streetError,
+    itemsError,
+  ] = useOrderCreate();
+
+  useEffect(() => {
+    if (success) {
+      navigation.navigate('Order', { id: orderId });
+    }
+  }, [success, orderId, navigation]);
+
+  useEffect(() => {
+    let message = '';
+
+    if (error) {
+      message += `${errorText(error)}, `;
+    }
+
+    if (stateError) {
+      message += `${errorText(stateError)}, `;
+    }
+
+    if (cityError) {
+      message += `${errorText(cityError)}, `;
+    }
+
+    if (streetError) {
+      message += `${errorText(streetError)}, `;
+    }
+
+    if (itemsError) {
+      message += `${errorText(itemsError)}.`;
+    }
+
+    Alert.alert(message);
+  }, [error, stateError, cityError, streetError, itemsError, errorText]);
 
   return (
     <FlatList
@@ -74,7 +131,8 @@ const OrderSummaryScreen = () => {
             <Text style={styles.detailTitle}>{t('Total')}</Text>
             <Text style={styles.detailBody}>{moneyFormat(total)}</Text>
           </View>
-          <FormButtonComponent text={t('Place_order')} action={() => 1} />
+          <FormButtonComponent text={t('Place_order')} action={onSubmit} />
+          <LoadingModalComponent visible={loading} />
         </View>
       }
     />

@@ -1,7 +1,7 @@
 import { createContext, useContext, useReducer } from 'react';
 import { categoriesReducer, categoriesState } from '../category';
 import { customerReducer, customerState } from '../customer';
-import { cartReducer, cartState } from '../order';
+import { cartReducer, cartState, orderReducer, orderState } from '../order';
 import {
   productReducer,
   productsReducer,
@@ -18,6 +18,7 @@ export const AppContext = createContext({
   products: productsState,
   productsSearch: productsSearchState,
   cart: cartState,
+  order: orderState,
 });
 
 export const useAppContext = () => {
@@ -49,6 +50,8 @@ export const useAppContextValues = () => {
 
   const [cart, cartDispatch] = useReducer(cartReducer, cartState);
 
+  const [order, orderDispatch] = useReducer(orderReducer, orderState);
+
   return {
     customer: {
       ...customer,
@@ -73,6 +76,10 @@ export const useAppContextValues = () => {
     cart: {
       ...cart,
       dispatch: cartDispatch,
+    },
+    order: {
+      ...order,
+      dispatch: orderDispatch,
     },
   };
 };
