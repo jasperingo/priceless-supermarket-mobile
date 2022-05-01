@@ -14,3 +14,5 @@ export {
   useCustomerAuthUnset,
 } from './hooks/customerAuthStorageHook';
 export { default as useCustomerFetch } from './hooks/customerFetchHook';
+export { default as useCustomerOrders } from './hooks/customerOrdersHook';
+export { default as useCustomerOrdersFetch } from './hooks/customerOrdersFetchHook';

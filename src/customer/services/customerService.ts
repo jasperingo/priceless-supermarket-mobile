@@ -1,4 +1,4 @@
-import rootService from '../../services';
+import rootService, { PAGE_LIMIT } from '../../services';
 
 const customerService = {
   authToken: '',
@@ -47,6 +47,17 @@ const customerService = {
 
   readOne(id: number) {
     return fetch(this.apiUrl(id), {
+      method: 'GET',
+      headers: rootService.jsonAndAuthHeader(this.authToken),
+    });
+  },
+
+  readOrders(id: number, before?: number) {
+    let queryString = `${id}/orders?limit=${PAGE_LIMIT}`;
+    if (before) {
+      queryString += `&before=${before}`;
+    }
+    return fetch(this.apiUrl(queryString), {
       method: 'GET',
       headers: rootService.jsonAndAuthHeader(this.authToken),
     });

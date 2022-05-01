@@ -1,7 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useMoneyFormat } from '../../hooks/formatters';
+import { useDateFormat, useMoneyFormat } from '../../hooks/formatters';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
+import { usePhotoUrl } from '../../photo';
+import Order from '../models/Order';
 
 const getStyle = (colors: AppColors, dimens: AppDimensions) =>
   StyleSheet.create({
@@ -47,22 +50,36 @@ const getStyle = (colors: AppColors, dimens: AppDimensions) =>
     },
   });
 
-const OrderItemComponent = () => {
+const OrderItemComponent = ({
+  item,
+  action,
+}: {
+  item: Order;
+  action: () => void;
+}) => {
+  const { t } = useTranslation();
+
   const styles = useAppStyles(getStyle);
+
+  const dateFormat = useDateFormat();
 
   const moneyFormat = useMoneyFormat();
 
+  const uri = usePhotoUrl(item?.orderItems?.[0]?.product?.photo?.url as string);
+
   return (
-    <TouchableOpacity style={styles.container} activeOpacity={0.8}>
-      <Image
-        style={styles.image}
-        source={require('../../assets/images/logo.jpg')}
-      />
+    <TouchableOpacity
+      onPress={action}
+      activeOpacity={0.8}
+      style={styles.container}>
+      <Image style={styles.image} source={{ uri }} />
       <View>
-        <Text style={styles.number}>OrderItemComponent</Text>
-        <Text style={styles.amount}>{moneyFormat(39)}</Text>
-        <Text style={styles.items}>3 items</Text>
-        <Text style={styles.date}>20:30pm 12th June 2022</Text>
+        <Text style={styles.number}>{item.number}</Text>
+        <Text style={styles.amount}>{moneyFormat(item.total as number)}</Text>
+        <Text style={styles.items}>
+          {t('__item', { count: item.orderItems?.length })}
+        </Text>
+        <Text style={styles.date}>{dateFormat(item.createdAt as Date)}</Text>
       </View>
     </TouchableOpacity>
   );

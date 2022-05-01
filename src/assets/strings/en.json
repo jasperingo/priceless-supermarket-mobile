@@ -96,6 +96,10 @@
 
   "Place_order": "Place order",
 
+  "__item": "{{ count }} item",
+
+  "__item_plural": "{{ count }} items",
+
 
   "Order_summary": "Order summary",
 
@@ -122,6 +126,8 @@
   "_empty_categories": "No category found",
 
   "_empty_products": "No product found",
+
+  "_empty_orders": "No order found",
 
 
   "_field_has_duplicates": "List should not hava duplicate items",
