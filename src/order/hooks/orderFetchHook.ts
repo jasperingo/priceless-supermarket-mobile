@@ -3,27 +3,27 @@ import { plainToInstance } from 'class-transformer';
 import { useCallback } from 'react';
 import ApiResponse from '../../dtos/ApiResponse';
 import ErrorCode, { parseError } from '../../errors/ErrorCode';
-import { ProductActionType } from '../context/productState';
-import Product from '../models/Product';
-import productService from '../services/productService';
-import useProduct from './productHook';
+import { OrderActionType } from '../context/orderState';
+import Order from '../models/Order';
+import orderService from '../services/orderService';
+import useOrder from './orderHook';
 
 type ReturnType = [
-  fetchProduct: (ID: number, authToken: string | null) => Promise<void>,
-  unfetchProduct: () => void | undefined,
+  fetchOrder: (ID: number, authToken: string | null) => Promise<void>,
+  unfetchOrder: () => void | undefined,
 ];
 
-const useProductFetch = (): ReturnType => {
-  const { dispatch, loading } = useProduct();
+const useOrderFetch = (): ReturnType => {
+  const { dispatch, loading } = useOrder();
 
   const { isConnected } = useNetInfo();
 
-  const unfetchProduct = useCallback(
-    () => dispatch?.({ type: ProductActionType.UNFETCHED }),
+  const unfetchOrder = useCallback(
+    () => dispatch?.({ type: OrderActionType.UNFETCHED }),
     [dispatch],
   );
 
-  const fetchProduct = useCallback(
+  const fetchOrder = useCallback(
     async (ID: number, authToken: string | null) => {
       if (loading) {
         return;
@@ -33,29 +33,29 @@ const useProductFetch = (): ReturnType => {
         return;
       } else if (!isConnected) {
         dispatch?.({
-          type: ProductActionType.ERROR,
+          type: OrderActionType.ERROR,
           payload: {
-            productId: ID,
+            orderId: ID,
             error: ErrorCode.NO_NETWORK_CONNECTION,
           },
         });
         return;
       }
 
-      dispatch?.({ type: ProductActionType.LOADING });
+      dispatch?.({ type: OrderActionType.LOADING });
 
       try {
-        productService.authToken = authToken ?? '';
-        const res = await productService.readOne(ID);
+        orderService.authToken = authToken ?? '';
+        const res = await orderService.readOne(ID);
 
-        const body = (await res.json()) as ApiResponse<Product>;
+        const body = (await res.json()) as ApiResponse<Order>;
 
         if (res.status === 200) {
           dispatch?.({
-            type: ProductActionType.FETCHED,
+            type: OrderActionType.FETCHED,
             payload: {
-              productId: ID,
-              product: plainToInstance(Product, body.data),
+              orderId: ID,
+              order: plainToInstance(Order, body.data),
             },
           });
         } else if (res.status === 401) {
@@ -69,9 +69,9 @@ const useProductFetch = (): ReturnType => {
         }
       } catch (err) {
         dispatch?.({
-          type: ProductActionType.ERROR,
+          type: OrderActionType.ERROR,
           payload: {
-            productId: ID,
+            orderId: ID,
             error: parseError(err),
           },
         });
@@ -80,7 +80,7 @@ const useProductFetch = (): ReturnType => {
     [isConnected, loading, dispatch],
   );
 
-  return [fetchProduct, unfetchProduct];
+  return [fetchOrder, unfetchOrder];
 };
 
-export default useProductFetch;
+export default useOrderFetch;

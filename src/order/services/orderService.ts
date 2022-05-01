@@ -24,6 +24,13 @@ const orderService = {
       headers: rootService.jsonAndAuthHeader(this.authToken),
     });
   },
+
+  readOne(id: number) {
+    return fetch(this.apiUrl(id), {
+      method: 'GET',
+      headers: rootService.jsonAndAuthHeader(this.authToken),
+    });
+  },
 };
 
 export default orderService;

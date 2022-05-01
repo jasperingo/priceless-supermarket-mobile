@@ -1,10 +1,9 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useDateFormat, useMoneyFormat } from '../../hooks/formatters';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { useMoneyFormat } from '../../hooks/formatters';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 import { usePhotoUrl } from '../../photo';
-import Order from '../models/Order';
+import OrderItem from '../models/OrderItem';
 
 const getStyle = (colors: AppColors, dimens: AppDimensions) =>
   StyleSheet.create({
@@ -31,57 +30,43 @@ const getStyle = (colors: AppColors, dimens: AppDimensions) =>
     },
 
     amount: {
-      fontSize: dimens.large,
+      fontSize: dimens.medium,
       color: colors.colorSecondary,
       marginBottom: dimens.xxSmall,
     },
 
-    items: {
-      alignSelf: 'flex-start',
-      padding: dimens.xxSmall,
-      borderRadius: dimens.xSmall,
-      color: colors.colorOnPrimary,
+    quantity: {
+      color: colors.colorOnSurface,
       marginBottom: dimens.xxSmall,
-      backgroundColor: colors.colorPrimary,
     },
 
-    date: {
-      color: colors.colorGray,
+    status: {
+      alignSelf: 'flex-start',
+      color: colors.colorOnPrimary,
+      borderRadius: dimens.xxSmall,
+      paddingVertical: dimens.xxSmall,
+      paddingHorizontal: dimens.xSmall,
+      backgroundColor: colors.colorGray,
     },
   });
 
-const OrderItemComponent = ({
-  item,
-  action,
-}: {
-  item: Order;
-  action: () => void;
-}) => {
-  const { t } = useTranslation();
-
+const OrderItemComponent = ({ item }: { item: OrderItem }) => {
   const styles = useAppStyles(getStyle);
-
-  const dateFormat = useDateFormat();
 
   const moneyFormat = useMoneyFormat();
 
-  const uri = usePhotoUrl(item?.orderItems?.[0]?.product?.photo?.url as string);
+  const uri = usePhotoUrl(item?.product?.photo?.url as string);
 
   return (
-    <TouchableOpacity
-      onPress={action}
-      activeOpacity={0.8}
-      style={styles.container}>
+    <View style={styles.container}>
       <Image style={styles.image} source={{ uri }} />
       <View>
-        <Text style={styles.number}>{item.number}</Text>
-        <Text style={styles.amount}>{moneyFormat(item.total as number)}</Text>
-        <Text style={styles.items}>
-          {t('__item', { count: item.orderItems?.length })}
-        </Text>
-        <Text style={styles.date}>{dateFormat(item.createdAt as Date)}</Text>
+        <Text style={styles.number}>{item.product?.name}</Text>
+        <Text style={styles.amount}>{moneyFormat(item.amount as number)}</Text>
+        <Text style={styles.quantity}>QTY: {item.quantity}</Text>
+        <Text style={styles.status}>{item.status}</Text>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 

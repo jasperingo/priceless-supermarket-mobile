@@ -46,6 +46,19 @@ const getStyle = (colors: AppColors, dimens: AppDimensions) =>
     },
   });
 
+const SummaryData = ({ title, body }: { title: string; body?: string }) => {
+  const { t } = useTranslation();
+
+  const styles = useAppStyles(getStyle);
+
+  return (
+    <View style={styles.detail}>
+      <Text style={styles.detailTitle}>{t(title)}</Text>
+      <Text style={styles.detailBody}>{body}</Text>
+    </View>
+  );
+};
+
 const OrderSummaryScreen = () => {
   const { t } = useTranslation();
 
@@ -142,22 +155,16 @@ const OrderSummaryScreen = () => {
       ListFooterComponentStyle={styles.footer}
       ListFooterComponent={
         <View>
-          <View style={styles.detail}>
-            <Text style={styles.detailTitle}>{t('Delivery_street')}</Text>
-            <Text style={styles.detailBody}>{cart?.deliveryAddressStreet}</Text>
-          </View>
-          <View style={styles.detail}>
-            <Text style={styles.detailTitle}>{t('Delivery_city')}</Text>
-            <Text style={styles.detailBody}>{cart?.deliveryAddressCity}</Text>
-          </View>
-          <View style={styles.detail}>
-            <Text style={styles.detailTitle}>{t('Delivery_state')}</Text>
-            <Text style={styles.detailBody}>{cart?.deliveryAddressState}</Text>
-          </View>
-          <View style={styles.detail}>
-            <Text style={styles.detailTitle}>{t('Total')}</Text>
-            <Text style={styles.detailBody}>{moneyFormat(total)}</Text>
-          </View>
+          <SummaryData
+            title="Delivery_street"
+            body={cart?.deliveryAddressStreet}
+          />
+          <SummaryData title="Delivery_city" body={cart?.deliveryAddressCity} />
+          <SummaryData
+            title="Delivery_state"
+            body={cart?.deliveryAddressState}
+          />
+          <SummaryData title="Total" body={moneyFormat(total)} />
           <FormButtonComponent text={t('Place_order')} action={onSubmit} />
           <LoadingModalComponent visible={loading} />
         </View>

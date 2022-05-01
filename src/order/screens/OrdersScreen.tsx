@@ -13,7 +13,7 @@ import {
 } from '../../customer';
 import ErrorCode from '../../errors/ErrorCode';
 import { AppDimensions, useAppStyles } from '../../hooks/styles';
-import OrderItemComponent from '../components/OrderItemComponent';
+import OrderComponent from '../components/OrderComponent';
 
 const getStyle = (_: any, dimensions: AppDimensions) =>
   StyleSheet.create({
@@ -54,7 +54,7 @@ const OrdersScreen = () => {
       onRefresh={unfetchOrders}
       keyExtractor={item => String(item.id)}
       renderItem={({ item }) => (
-        <OrderItemComponent
+        <OrderComponent
           item={item}
           action={() => navigation.navigate('Order', { id: item.id as number })}
         />

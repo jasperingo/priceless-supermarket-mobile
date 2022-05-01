@@ -5,7 +5,7 @@ export type OrderState = {
   order: null | Order;
   loading: boolean;
   error: null | ErrorCode;
-  orderId: null | string;
+  orderId: null | number;
   dispatch: null | React.Dispatch<OrderAction>;
 };
 

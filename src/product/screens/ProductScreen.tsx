@@ -18,7 +18,6 @@ import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useMoneyFormat } from '../../hooks/formatters';
 import { useTranslation } from 'react-i18next';
-import ProductSpecificationComponent from '../components/ProductSpecificationComponent';
 import QuantityPickerComponent from '../components/QuantityPickerComponent';
 import useProduct from '../hooks/productHook';
 import useProductFetch from '../hooks/productFetchHook';
@@ -33,6 +32,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import HeaderButtonComponent from '../../components/header/HeaderButtonComponent';
 import { useCartItemsCount } from '../../order';
 import { CartActionType } from '../../order';
+import SpecificationComponent from '../../components/utils/SpecificationComponent';
 
 const getStyles = (colors: AppColors, dimens: AppDimensions) =>
   StyleSheet.create({
@@ -181,30 +181,27 @@ const ProductScreen = () => {
 
           <View style={styles.dataContainer}>
             <Text style={styles.heading}>{t('Product_specifications')}</Text>
-            <ProductSpecificationComponent
+            <SpecificationComponent
               title="Category"
               body={product.category?.name as string}
             />
             {product.barcode && (
-              <ProductSpecificationComponent
-                title="Barcode"
-                body={product.barcode}
-              />
+              <SpecificationComponent title="Barcode" body={product.barcode} />
             )}
             {product.weight && (
-              <ProductSpecificationComponent
+              <SpecificationComponent
                 title="Weight"
                 body={`${product.weight} (kg)`}
               />
             )}
             {product.width && (
-              <ProductSpecificationComponent
+              <SpecificationComponent
                 title="Width"
                 body={`${product.width} (cm)`}
               />
             )}
             {product.height && (
-              <ProductSpecificationComponent
+              <SpecificationComponent
                 title="Height"
                 body={`${product.height} (cm)`}
               />

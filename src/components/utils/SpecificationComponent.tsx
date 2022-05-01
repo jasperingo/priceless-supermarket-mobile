@@ -21,7 +21,7 @@ const getStyles = (colors: AppColors, dimens: AppDimensions) =>
     },
   });
 
-const ProductSpecificationComponent = ({
+const SpecificationComponent = ({
   title,
   body,
 }: {
@@ -40,4 +40,4 @@ const ProductSpecificationComponent = ({
   );
 };
 
-export default ProductSpecificationComponent;
+export default SpecificationComponent;
