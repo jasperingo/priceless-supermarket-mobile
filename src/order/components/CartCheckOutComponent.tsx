@@ -2,8 +2,9 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { RootStackParamList } from '../../../App';
+import FormButtonComponent from '../../components/form/FormButtonComponent';
 import { useMoneyFormat } from '../../hooks/formatters';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 import useCartItemsTotal from '../hooks/cartItemsTotalHook';
@@ -15,18 +16,6 @@ const getStyles = (colors: AppColors, dimens: AppDimensions) =>
       marginBottom: dimens.small,
       borderRadius: dimens.xSmall,
       backgroundColor: colors.colorSurface,
-    },
-
-    button: {
-      alignItems: 'center',
-      padding: dimens.small,
-      borderRadius: dimens.xSmall,
-      backgroundColor: colors.colorPrimary,
-    },
-
-    buttonText: {
-      fontWeight: 'bold',
-      color: colors.colorOnPrimary,
     },
 
     total: {
@@ -51,12 +40,10 @@ const CartCheckOutComponent = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.total}>{moneyFormat(total)}</Text>
-      <TouchableOpacity
-        activeOpacity={0.8}
-        style={styles.button}
-        onPress={() => navigation.navigate('DeliveryAddress')}>
-        <Text style={styles.buttonText}>{t('Check_out')}</Text>
-      </TouchableOpacity>
+      <FormButtonComponent
+        text={t('Check_out')}
+        action={() => navigation.navigate('DeliveryAddress')}
+      />
     </View>
   );
 };

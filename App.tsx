@@ -20,10 +20,14 @@ import {
   SignUpScreen,
 } from './src/customer';
 import { useTranslation } from 'react-i18next';
-import { ProductScreen } from './src/product';
-import ProductSearchScreen from './src/product/screens/ProductSearchScreen';
-import { CartScreen } from './src/order';
-import DeliveryAddressScreen from './src/order/screens/DeliveryAddressScreen';
+import { ProductScreen, ProductSearchScreen } from './src/product';
+import {
+  CartScreen,
+  OrdersScreen,
+  DeliveryAddressScreen,
+  OrderSummaryScreen,
+  OrderScreen,
+} from './src/order';
 
 const AppTheme = (Colors: AppColors) => ({
   ...DefaultTheme,
@@ -42,8 +46,11 @@ export type RootStackParamList = {
   SignUp: undefined;
   Account: undefined;
   Profile: undefined;
+  Orders: undefined;
   Cart: undefined;
   DeliveryAddress: undefined;
+  OrderSummary: undefined;
+  Order: { id: number };
   Product: { id: number };
   Search: { q: string | null; categoryId: number | null };
   Home: NavigatorScreenParams<HomeTabParamList>;
@@ -114,6 +121,21 @@ const App = () => {
               name="DeliveryAddress"
               component={DeliveryAddressScreen}
               options={{ title: t('Delivery_address') }}
+            />
+            <Stack.Screen
+              name="OrderSummary"
+              component={OrderSummaryScreen}
+              options={{ title: t('Order_summary') }}
+            />
+            <Stack.Screen
+              name="Orders"
+              component={OrdersScreen}
+              options={{ title: t('Orders') }}
+            />
+            <Stack.Screen
+              name="Order"
+              component={OrderScreen}
+              options={{ title: t('Order') }}
             />
           </Stack.Navigator>
         </NavigationContainer>

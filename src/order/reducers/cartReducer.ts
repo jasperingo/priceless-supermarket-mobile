@@ -61,6 +61,17 @@ const cartReducer = (
         },
       };
 
+    case CartActionType.DELIVERY_ADDRESS_ADDED:
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          deliveryAddressCity: payload?.cart?.deliveryAddressCity,
+          deliveryAddressState: payload?.cart?.deliveryAddressState,
+          deliveryAddressStreet: payload?.cart?.deliveryAddressStreet,
+        },
+      };
+
     default:
       return state;
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import EmptyListComponent from '../../components/fetch/EmptyListComponent';
 import { AppDimensions, useAppStyles } from '../../hooks/styles';
 import CartCheckOutComponent from '../components/CartCheckOutComponent';
@@ -19,22 +19,20 @@ const CartScreen = () => {
   const styles = useAppStyles(getStyle);
 
   return (
-    <View>
-      <FlatList
-        data={cart?.orderItems ?? []}
-        renderItem={({ item }) => <CartItemComponent item={item} />}
-        contentContainerStyle={styles.wrapper}
-        ListFooterComponent={
-          (cart !== null && cart?.orderItems?.length && (
-            <CartCheckOutComponent />
-          )) ||
-          ((cart === null || cart.orderItems?.length === 0) && (
-            <EmptyListComponent text="Cart_is_empty" />
-          )) ||
-          null
-        }
-      />
-    </View>
+    <FlatList
+      data={cart?.orderItems ?? []}
+      renderItem={({ item }) => <CartItemComponent item={item} />}
+      contentContainerStyle={styles.wrapper}
+      ListFooterComponent={
+        (cart !== null && cart?.orderItems?.length && (
+          <CartCheckOutComponent />
+        )) ||
+        ((cart === null || cart.orderItems?.length === 0) && (
+          <EmptyListComponent text="Cart_is_empty" />
+        )) ||
+        null
+      }
+    />
   );
 };
 

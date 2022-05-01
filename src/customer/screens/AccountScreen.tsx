@@ -148,7 +148,7 @@ const AccountScreen = () => {
         <MenuItem
           icon="file-tray-full"
           text="Orders"
-          action={() => Alert.alert('Orders clicked')}
+          action={() => navigation.navigate('Orders')}
         />
       </View>
 

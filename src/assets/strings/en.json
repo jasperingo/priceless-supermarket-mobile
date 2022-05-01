@@ -82,7 +82,22 @@
 
   "Product_specifications": "Product specifications",
 
+  "Total": "Total",
+
+  "Delivery_street": "Delivery street",
+  
+  "Delivery_city": "Delivery city",
+
+  "Delivery_state": "Delivery state",
+
+  "Order": "Order",
+
   "Orders": "Orders",
+
+  "Place_order": "Place order",
+
+
+  "Order_summary": "Order summary",
 
   "Cart": "Cart",
 

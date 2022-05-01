@@ -3,16 +3,22 @@ import { useCallback, useState } from 'react';
 import ErrorCode, { ErrorCodeType } from '../../errors/ErrorCode';
 import deliveryLocationsService from '../services/deliveryLocationsService';
 
+type Location = {
+  state: string;
+  alias: string;
+  lgas: string[];
+};
+
 type ReturnType = [
   fetchLocations: () => Promise<void>,
-  locations: any[],
+  locations: Location[],
   loading: boolean,
   error: ErrorCodeType,
   loaded: boolean,
 ];
 
 const useDeliveryLocationsFetch = (): ReturnType => {
-  const [locations, setLocations] = useState<any>([]);
+  const [locations, setLocations] = useState<Location[]>([]);
 
   const [loaded, setLoaded] = useState(false);
 
@@ -38,23 +44,20 @@ const useDeliveryLocationsFetch = (): ReturnType => {
     try {
       const res = await deliveryLocationsService.read();
 
-      const body = (await res.json()) as any[];
+      const body = (await res.json()) as Location[];
 
       if (res.status === 200) {
-        const resArray = await Promise.all(
-          body.map(i => deliveryLocationsService.readOne(i.id)),
-        );
-
-        const bodyArray = await Promise.all(
-          resArray.map(resp => {
-            if (!resp.ok) {
-              throw ErrorCode.UNKNOWN;
+        setLocations(
+          body.sort((a, b) => {
+            if (a.state < b.state) {
+              return -1;
             }
-            resp.json();
+            if (a.state > b.state) {
+              return 1;
+            }
+            return 0;
           }),
         );
-
-        setLocations(bodyArray);
         setLoaded(true);
       } else {
         throw ErrorCode.UNKNOWN;

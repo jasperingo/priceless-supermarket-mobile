@@ -59,8 +59,12 @@ const PickerComponent = ({
         selectedValue={value}
         onValueChange={onChangeValue}>
         <Picker.Item label={t('Select_an_option')} value="" enabled={false} />
-        {options.map(item => (
-          <Picker.Item label={item.label} value={item.value} />
+        {options.map((item, index) => (
+          <Picker.Item
+            label={item.label}
+            value={item.value}
+            key={`picker-item-${index}`}
+          />
         ))}
       </Picker>
       {error && <Text style={styles.error}>{t(errorText(error))}</Text>}

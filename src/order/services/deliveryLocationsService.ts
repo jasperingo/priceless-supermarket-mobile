@@ -1,16 +1,8 @@
-const API_URL = 'https://api.facts.ng/v1/';
+const API_URL = 'http://locationsng-api.herokuapp.com/api/v1/lgas/';
 
 const deliveryLocationsService = {
-  apiURl(path?: string) {
-    return `${API_URL}states/${path}`;
-  },
-
   read() {
-    return fetch(this.apiURl());
-  },
-
-  readOne(id: string) {
-    return fetch(this.apiURl(id));
+    return fetch(API_URL);
   },
 };
 
