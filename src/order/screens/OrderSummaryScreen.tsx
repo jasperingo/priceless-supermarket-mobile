@@ -10,6 +10,7 @@ import { useErrorTextTranslate } from '../../errors/errorTextHook';
 import { useMoneyFormat } from '../../hooks/formatters';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 import CartItemComponent from '../components/CartItemComponent';
+import { CartActionType } from '../context/cartState';
 import useCart from '../hooks/cartHook';
 import useCartItemsTotal from '../hooks/cartItemsTotalHook';
 import useOrderCreate from '../hooks/orderCreateHook';
@@ -50,7 +51,7 @@ const OrderSummaryScreen = () => {
 
   const styles = useAppStyles(getStyle);
 
-  const { cart } = useCart();
+  const { cart, dispatch } = useCart();
 
   const moneyFormat = useMoneyFormat();
 
@@ -73,13 +74,18 @@ const OrderSummaryScreen = () => {
     cityError,
     streetError,
     itemsError,
+    itemsErrorArray,
   ] = useOrderCreate();
 
   useEffect(() => {
     if (success) {
-      navigation.navigate('Order', { id: orderId });
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Home' }, { name: 'Order', params: { id: orderId } }],
+      });
+      dispatch?.({ type: CartActionType.EMPTIED });
     }
-  }, [success, orderId, navigation]);
+  }, [success, orderId, navigation, dispatch]);
 
   useEffect(() => {
     let message = '';
@@ -101,11 +107,32 @@ const OrderSummaryScreen = () => {
     }
 
     if (itemsError) {
-      message += `${errorText(itemsError)}.`;
+      message += `${errorText(itemsError)}, `;
     }
 
-    Alert.alert(message);
-  }, [error, stateError, cityError, streetError, itemsError, errorText]);
+    if (itemsErrorArray) {
+      message += itemsErrorArray.map(item => `${errorText(item)}, `);
+    }
+
+    if (message !== '') {
+      message += '.';
+      Alert.alert(message);
+    }
+  }, [
+    error,
+    stateError,
+    cityError,
+    streetError,
+    itemsError,
+    itemsErrorArray,
+    errorText,
+  ]);
+
+  useEffect(() => {
+    if (!success && (cart === null || cart.orderItems?.length === 0)) {
+      navigation.pop(2);
+    }
+  }, [cart, navigation, success]);
 
   return (
     <FlatList

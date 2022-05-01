@@ -7,6 +7,7 @@ export type CartState = {
 };
 
 export enum CartActionType {
+  EMPTIED = 'CART_EMPTIED',
   ITEM_ADDED = 'CART_ITEM_ADDED',
   ITEM_REMOVED = 'CART_ITEM_REMOVED',
   ITEM_QUANTITY_CHANGED = 'CART_ITEM_QUANTITY_CHANGED',

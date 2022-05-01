@@ -5,6 +5,12 @@ const cartReducer = (
   { type, payload }: CartAction,
 ): CartState => {
   switch (type) {
+    case CartActionType.EMPTIED:
+      return {
+        ...state,
+        cart: null,
+      };
+
     case CartActionType.ITEM_ADDED:
       let newList;
       const existingItem = state.cart?.orderItems?.find(

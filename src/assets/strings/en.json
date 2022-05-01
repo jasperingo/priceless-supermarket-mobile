@@ -124,6 +124,12 @@
   "_empty_products": "No product found",
 
 
+  "_field_has_duplicates": "List should not hava duplicate items",
+
+  "_id_do_not_exist": "Resource with id was not found",
+
+  "_product_out_of_stock": "A product on your order is out of stock",
+
   "_search_q_length": "Search query must be 3 or more characters",
 
   "_field_required": "This field is required",

@@ -1,10 +1,12 @@
 import ErrorCode from './ErrorCode';
 
-type BadRequestType = {
+type BadRequestRootType = {
   message: string;
   error_code: ErrorCode;
   name: string;
-  errors: BadRequestType[];
-}[];
+  errors: BadRequestRootType[];
+};
+
+type BadRequestType = BadRequestRootType[];
 
 export default BadRequestType;

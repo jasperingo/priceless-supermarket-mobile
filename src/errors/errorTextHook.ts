@@ -5,6 +5,12 @@ import ErrorCode from './ErrorCode';
 export const useErrorText = () => {
   return useCallback((code: ErrorCode) => {
     switch (code) {
+      case ErrorCode.FIELD_HAS_DUPLICATES:
+        return '_field_has_duplicates';
+      case ErrorCode.ID_DO_NOT_EXIST:
+        return '_id_do_not_exist';
+      case ErrorCode.PRODUCT_OUT_OF_STOCK:
+        return '_product_out_of_stock';
       case ErrorCode.PASSWORD_LENGTH:
         return '_password_length';
       case ErrorCode.PHONE_NUMBER_INVALID:
