@@ -1,13 +1,25 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
+import { AppDimensions, useAppStyles } from '../../hooks/styles';
+import OrderItemComponent from '../components/OrderItemComponent';
 
-const styles = StyleSheet.create({});
+const getStyle = (_: any, dimensions: AppDimensions) =>
+  StyleSheet.create({
+    container: {
+      margin: dimensions.xSmall,
+    },
+  });
 
 const OrdersScreen = () => {
+  const styles = useAppStyles(getStyle);
+
   return (
-    <View>
-      <Text>OrdersScreen</Text>
-    </View>
+    <FlatList
+      data={[1, 2, 3, 4, 5, 6]}
+      keyExtractor={item => String(item)}
+      renderItem={() => <OrderItemComponent />}
+      contentContainerStyle={styles.container}
+    />
   );
 };
 

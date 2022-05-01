@@ -6,6 +6,8 @@ export { default as OrdersScreen } from './screens/OrdersScreen';
 export { default as OrderSummaryScreen } from './screens/OrderSummaryScreen';
 export { default as cartState, CartActionType } from './context/cartState';
 export { default as orderState, OrderActionType } from './context/orderState';
+export { OrdersActionType } from './context/ordersState';
+export type { OrdersAction, OrdersState } from './context/ordersState';
 export { default as cartReducer } from './reducers/cartReducer';
 export { default as orderReducer } from './reducers/orderReducer';
 export { default as useCartItemsCount } from './hooks/cartItemsCountHook';
