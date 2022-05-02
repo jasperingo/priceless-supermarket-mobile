@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 import { RootStackParamList } from '../../../App';
 import FormButtonComponent from '../../components/form/FormButtonComponent';
+import { useCustomer } from '../../customer';
 import { useMoneyFormat } from '../../hooks/formatters';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 import useCartItemsTotal from '../hooks/cartItemsTotalHook';
@@ -28,6 +29,8 @@ const getStyles = (colors: AppColors, dimens: AppDimensions) =>
 const CartCheckOutComponent = () => {
   const { t } = useTranslation();
 
+  const { customer } = useCustomer();
+
   const styles = useAppStyles(getStyles);
 
   const moneyFormat = useMoneyFormat();
@@ -42,7 +45,9 @@ const CartCheckOutComponent = () => {
       <Text style={styles.total}>{moneyFormat(total)}</Text>
       <FormButtonComponent
         text={t('Check_out')}
-        action={() => navigation.navigate('DeliveryAddress')}
+        action={() =>
+          navigation.navigate(customer === null ? 'SignIn' : 'DeliveryAddress')
+        }
       />
     </View>
   );

@@ -33,7 +33,9 @@ const useDeliveryLocationsFetch = (): ReturnType => {
       return;
     }
 
-    if (!isConnected) {
+    if (isConnected === null) {
+      return;
+    } else if (!isConnected) {
       setError(ErrorCode.NO_NETWORK_CONNECTION);
       return;
     }
