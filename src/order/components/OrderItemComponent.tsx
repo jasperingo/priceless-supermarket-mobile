@@ -1,9 +1,11 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useMoneyFormat } from '../../hooks/formatters';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 import { usePhotoUrl } from '../../photo';
-import OrderItem from '../models/OrderItem';
+import useOrderItemStatusColor from '../hooks/orderItemStatusColorHook';
+import OrderItem, { OrderItemStatus } from '../models/OrderItem';
 
 const getStyle = (colors: AppColors, dimens: AppDimensions) =>
   StyleSheet.create({
@@ -13,6 +15,10 @@ const getStyle = (colors: AppColors, dimens: AppDimensions) =>
       marginBottom: dimens.small,
       borderRadius: dimens.xxSmall,
       backgroundColor: colors.colorSurface,
+    },
+
+    body: {
+      flexGrow: 1,
     },
 
     image: {
@@ -48,23 +54,58 @@ const getStyle = (colors: AppColors, dimens: AppDimensions) =>
       paddingHorizontal: dimens.xSmall,
       backgroundColor: colors.colorGray,
     },
+
+    updateButton: {
+      padding: dimens.xSmall,
+      marginTop: dimens.xSmall,
+      borderRadius: dimens.xxSmall,
+      backgroundColor: colors.colorPrimary,
+    },
+
+    updateButtonRed: {
+      padding: dimens.xSmall,
+      marginTop: dimens.xSmall,
+      borderRadius: dimens.xxSmall,
+      backgroundColor: colors.colorError,
+    },
+
+    updateButtonText: {
+      textAlign: 'center',
+      color: colors.colorOnPrimary,
+    },
   });
 
 const OrderItemComponent = ({ item }: { item: OrderItem }) => {
+  const { t } = useTranslation();
+
   const styles = useAppStyles(getStyle);
 
   const moneyFormat = useMoneyFormat();
 
   const uri = usePhotoUrl(item?.product?.photo?.url as string);
 
+  const statusColor = useOrderItemStatusColor();
+
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={{ uri }} />
-      <View>
+      <View style={styles.body}>
         <Text style={styles.number}>{item.product?.name}</Text>
         <Text style={styles.amount}>{moneyFormat(item.amount as number)}</Text>
         <Text style={styles.quantity}>QTY: {item.quantity}</Text>
-        <Text style={styles.status}>{item.status}</Text>
+        <Text style={[styles.status, statusColor(item.status)]}>
+          {item.status}
+        </Text>
+        {item.status === OrderItemStatus.PENDING && (
+          <TouchableOpacity activeOpacity={0.8} style={styles.updateButtonRed}>
+            <Text style={styles.updateButtonText}>{t('Cancel')}</Text>
+          </TouchableOpacity>
+        )}
+        {item.status === OrderItemStatus.TRANSPORTING && (
+          <TouchableOpacity activeOpacity={0.8} style={styles.updateButton}>
+            <Text style={styles.updateButtonText}>{t('Fulfilled')}</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

@@ -1,6 +1,16 @@
 import { Expose, Type } from 'class-transformer';
 import Product from '../../product/models/Product';
 
+export enum OrderItemStatus {
+  PENDING = 'pending',
+  CANCELLED = 'cancelled',
+  ACCEPTED = 'accepted',
+  DECLINED = 'declined',
+  PROCESSING = 'processing',
+  TRANSPORTING = 'transporting',
+  FULFILLED = 'fulfilled',
+}
+
 export default class OrderItem {
   id?: number;
 
@@ -8,7 +18,7 @@ export default class OrderItem {
 
   quantity?: number;
 
-  status?: string;
+  status?: OrderItemStatus;
 
   @Type(() => Product)
   product?: Product;
