@@ -29,7 +29,9 @@ const useProductsFetch = (): ReturnType => {
         return;
       }
 
-      if (!isConnected) {
+      if (isConnected === null) {
+        return;
+      } else if (!isConnected) {
         dispatch?.({
           type: ProductsActionType.ERROR,
           payload: { error: ErrorCode.NO_NETWORK_CONNECTION },

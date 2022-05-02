@@ -17,6 +17,8 @@ const getStyle = (colors: AppColors, dimens: AppDimensions) =>
 
     item: {
       minWidth: '80%',
+      flexDirection: 'row',
+      alignItems: 'center',
       borderBottomWidth: 1,
       padding: dimens.small,
       borderBottomColor: colors.colorBackground,
@@ -36,14 +38,22 @@ const getStyle = (colors: AppColors, dimens: AppDimensions) =>
       fontSize: dimens.large,
       color: colors.colorOnSurface,
     },
+
+    activeIcon: {
+      fontSize: dimens.large,
+      color: colors.colorPrimary,
+      marginLeft: dimens.xxSmall,
+    },
   });
 
 const CategoriesModalComponent = ({
   visible,
+  categoryId,
   action,
   close,
 }: {
   visible: boolean;
+  categoryId: number | null;
   action: (id: number) => void;
   close: () => void;
 }) => {
@@ -69,6 +79,9 @@ const CategoriesModalComponent = ({
             style={styles.item}
             onPress={() => action(item.id as number)}>
             <Text style={styles.itemText}>{item.name}</Text>
+            {categoryId === item.id && (
+              <Ionicons name="checkmark-circle" style={styles.activeIcon} />
+            )}
           </TouchableOpacity>
         )}
         style={styles.container}

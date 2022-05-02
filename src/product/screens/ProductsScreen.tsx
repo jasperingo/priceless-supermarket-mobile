@@ -1,7 +1,10 @@
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
+import { RootStackParamList } from '../../../App';
 import { AppDimensions, useAppStyles } from '../../hooks/styles';
-import ProductItem from '../components/ProductItem';
+import ProductComponent from '../components/ProductComponent';
 import ProductListFooterComponent from '../components/ProductListFooterComponent';
 import useProductsFetch from '../hooks/productsFetchHook';
 import useProducts from '../hooks/productsHook';
@@ -21,6 +24,9 @@ const ProductsScreen = () => {
 
   const [fetchProducts, unfetchProducts] = useProductsFetch();
 
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
+
   useEffect(() => {
     if (!loaded && error === null) {
       fetchProducts();
@@ -36,7 +42,14 @@ const ProductsScreen = () => {
       refreshing={false}
       onRefresh={unfetchProducts}
       keyExtractor={item => String(item.id)}
-      renderItem={({ item }) => <ProductItem item={item} />}
+      renderItem={({ item }) => (
+        <ProductComponent
+          item={item}
+          action={() =>
+            navigation.navigate('Product', { id: item.id as number })
+          }
+        />
+      )}
       columnWrapperStyle={styles.wrapper}
       onEndReached={ended ? null : productsFetch}
       ListFooterComponentStyle={styles.wrapper}

@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { OrdersActionType } from '../../order';
 import { CustomerActionType } from '../context/customerState';
 import { useCustomerAuthUnset } from './customerAuthStorageHook';
 import useCustomer from './customerHook';
+import useCustomerOrders from './customerOrdersHook';
 
 const useCustomerSignOut = (): [
   signOut: () => Promise<void>,
@@ -9,6 +11,8 @@ const useCustomerSignOut = (): [
   error: boolean,
 ] => {
   const { dispatch } = useCustomer();
+
+  const { dispatch: orderDispatch } = useCustomerOrders();
 
   const unauth = useCustomerAuthUnset();
 
@@ -23,6 +27,7 @@ const useCustomerSignOut = (): [
     try {
       await unauth();
       dispatch?.({ type: CustomerActionType.UNFETCHED });
+      orderDispatch?.({ type: OrdersActionType.UNFETCHED });
     } catch {
       setError(true);
     } finally {

@@ -18,6 +18,8 @@ import { useErrorTextTranslate } from '../../errors/errorTextHook';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 import useCustomerCreate from '../hooks/customerCreateHook';
 import useCustomerSignIn from '../hooks/customerSignInHook';
+import useCustomer from '../hooks/customerHook';
+import { CustomerActionType } from '../context/customerState';
 
 const getStyles = (colors: AppColors, dimensions: AppDimensions) =>
   StyleSheet.create({
@@ -58,6 +60,8 @@ const SignUpScreen = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'SignUp'>>();
 
+  const { dispatch } = useCustomer();
+
   const [
     submit,
     loading,
@@ -70,8 +74,14 @@ const SignUpScreen = () => {
     passwordError,
   ] = useCustomerCreate();
 
-  const [loginSubmit, loginLoading, loginSuccess, loginError] =
-    useCustomerSignIn();
+  const [
+    loginSubmit,
+    loginLoading,
+    loginSuccess,
+    loginError,
+    ,
+    customerAuthToken,
+  ] = useCustomerSignIn();
 
   const [firstName, setFirstName] = useState('');
 
@@ -99,9 +109,20 @@ const SignUpScreen = () => {
     }
 
     if (loginSuccess) {
+      dispatch?.({
+        type: CustomerActionType.FETCHED,
+        payload: { token: customerAuthToken },
+      });
       navigation.navigate('Home', { screen: 'Products' });
     }
-  }, [loginSuccess, loginError, navigation, errorText]);
+  }, [
+    loginSuccess,
+    loginError,
+    navigation,
+    customerAuthToken,
+    errorText,
+    dispatch,
+  ]);
 
   const onSubmitClicked = () => {
     submit(firstName, lastName, emailAddress, phoneNumber, password);

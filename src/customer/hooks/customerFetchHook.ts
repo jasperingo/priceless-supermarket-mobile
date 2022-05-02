@@ -11,14 +11,10 @@ import Customer from '../models/Customer';
 type ReturnType = [
   fetchCustomer: (ID: number, authToken: string) => Promise<void>,
   unfetchCustomer: () => void | undefined,
-  customer: Customer | null,
-  loading: boolean,
-  error: ErrorCode | null,
-  customerId: string | null,
 ];
 
 const useCustomerFetch = (): ReturnType => {
-  const { dispatch, customer, customerId, error, loading } = useCustomer();
+  const { dispatch, loading } = useCustomer();
 
   const { isConnected } = useNetInfo();
 
@@ -33,7 +29,9 @@ const useCustomerFetch = (): ReturnType => {
         return;
       }
 
-      if (!isConnected) {
+      if (isConnected === null) {
+        return;
+      } else if (!isConnected) {
         dispatch?.({
           type: CustomerActionType.ERROR,
           payload: {
@@ -83,7 +81,7 @@ const useCustomerFetch = (): ReturnType => {
     [isConnected, loading, dispatch],
   );
 
-  return [fetchCustomer, unfetchCustomer, customer, loading, error, customerId];
+  return [fetchCustomer, unfetchCustomer];
 };
 
 export default useCustomerFetch;

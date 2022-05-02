@@ -33,7 +33,9 @@ const useProductsSearchFetch = (): ReturnType => {
         return;
       }
 
-      if (!isConnected) {
+      if (isConnected === null) {
+        return;
+      } else if (!isConnected) {
         dispatch?.({
           type: ProductsSearchActionType.ERROR,
           payload: {

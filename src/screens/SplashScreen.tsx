@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNetInfo } from '@react-native-community/netinfo';
 import {
   ActivityIndicator,
   Image,
@@ -19,6 +18,7 @@ import {
   useAppStyles,
 } from '../hooks/styles';
 import {
+  useCustomer,
   useCustomerAuthGet,
   useCustomerAuthUnset,
   useCustomerFetch,
@@ -63,13 +63,12 @@ const SplashScreen = () => {
 
   const removeAuth = useCustomerAuthUnset();
 
-  const { isConnected } = useNetInfo();
-
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'Splash'>>();
 
-  const [fetchCustomer, , customer, fetchLoading, fetchError] =
-    useCustomerFetch();
+  const { customer, loading: fetchLoading, error: fetchError } = useCustomer();
+
+  const [fetchCustomer] = useCustomerFetch();
 
   const [error, setError] = useState(false);
 
@@ -85,21 +84,15 @@ const SplashScreen = () => {
       setLoading(true);
       try {
         await removeAuth();
+        navigate();
       } catch {
         setError(true);
-      } finally {
-        navigate();
       }
     };
 
     if (fetchError !== null) {
       if (fetchError === ErrorCode.UNAUTHORIZED) {
         unsaveToken();
-      } else if (
-        fetchError === ErrorCode.NO_NETWORK_CONNECTION &&
-        isConnected
-      ) {
-        return;
       } else {
         setError(true);
         ToastAndroid.show(errorText(fetchError), ToastAndroid.LONG);
@@ -107,7 +100,7 @@ const SplashScreen = () => {
     } else {
       setError(false);
     }
-  }, [isConnected, fetchError, removeAuth, errorText, navigate]);
+  }, [fetchError, removeAuth, errorText, navigate]);
 
   useEffect(() => {
     const checkForAuth = async () => {

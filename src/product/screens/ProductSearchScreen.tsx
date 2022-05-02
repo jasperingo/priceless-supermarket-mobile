@@ -9,7 +9,7 @@ import CategoriesModalComponent from '../../category/components/CategoriesModalC
 import SearchFormComponent from '../../components/form/SearchFormComponent';
 import HeaderButtonComponent from '../../components/header/HeaderButtonComponent';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
-import ProductItem from '../components/ProductItem';
+import ProductComponent from '../components/ProductComponent';
 import ProductListFooterComponent from '../components/ProductListFooterComponent';
 import useProductsSearchFetch from '../hooks/productsSearchFetchHook';
 import useProductsSearch from '../hooks/productsSearchHook';
@@ -110,6 +110,7 @@ const ProductSearchScreen = () => {
       )}
       <CategoriesModalComponent
         visible={filter}
+        categoryId={categoryId}
         action={catId => {
           setFilter(false);
           navigation.setParams({ q, categoryId: catId });
@@ -122,7 +123,14 @@ const ProductSearchScreen = () => {
         refreshing={false}
         onRefresh={unfetchProducts}
         keyExtractor={item => String(item.id)}
-        renderItem={({ item }) => <ProductItem item={item} />}
+        renderItem={({ item }) => (
+          <ProductComponent
+            item={item}
+            action={() =>
+              navigation.navigate('Product', { id: item.id as number })
+            }
+          />
+        )}
         columnWrapperStyle={styles.wrapper}
         onEndReached={ended ? null : productsFetch}
         ListFooterComponentStyle={styles.wrapper}

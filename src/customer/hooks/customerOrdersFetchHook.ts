@@ -59,6 +59,8 @@ const useCustomerOrdersFetch = (): ReturnType => {
               orders: plainToInstance(Order, body.data),
             },
           });
+        } else if (res.status === 401) {
+          throw ErrorCode.UNAUTHORIZED;
         } else if (res.status === 404) {
           throw ErrorCode.NOT_FOUND;
         } else {

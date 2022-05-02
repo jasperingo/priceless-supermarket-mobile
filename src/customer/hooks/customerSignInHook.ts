@@ -70,8 +70,7 @@ const useCustomerSignIn = (): ReturnType => {
       } else {
         throw new Error();
       }
-    } catch (serverError) {
-      console.error(serverError);
+    } catch {
       setError(ErrorCode.UNKNOWN);
     } finally {
       setLoading(false);

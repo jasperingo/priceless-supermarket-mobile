@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +20,7 @@ import LoadingModalComponent from '../../components/modal/LoadingModalComponent'
 import { useErrorTextTranslate } from '../../errors/errorTextHook';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 import useCustomerFetch from '../hooks/customerFetchHook';
+import useCustomer from '../hooks/customerHook';
 import useCustomerSignIn from '../hooks/customerSignInHook';
 
 const getStyles = (colors: AppColors, dimensions: AppDimensions) =>
@@ -52,14 +53,17 @@ const SignInScreen = () => {
 
   const errorText = useErrorTextTranslate();
 
+  const isFocused = useIsFocused();
+
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'SignIn'>>();
 
   const [submit, loading, success, error, customerId, customerAuthToken] =
     useCustomerSignIn();
 
-  const [fetchCustomer, , customer, fetchLoading, fetchError] =
-    useCustomerFetch();
+  const { customer, loading: fetchLoading, error: fetchError } = useCustomer();
+
+  const [fetchCustomer] = useCustomerFetch();
 
   const [email, setEmail] = useState('');
 
@@ -80,10 +84,10 @@ const SignInScreen = () => {
       ToastAndroid.show(errorText(fetchError), ToastAndroid.LONG);
     }
 
-    if (customer !== null) {
+    if (customer !== null && isFocused) {
       navigation.replace('Home', { screen: 'Products' });
     }
-  }, [fetchError, customer, navigation, errorText]);
+  }, [fetchError, customer, navigation, isFocused, errorText]);
 
   return (
     <KeyboardAvoidingView

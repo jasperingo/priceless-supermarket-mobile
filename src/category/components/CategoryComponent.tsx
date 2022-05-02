@@ -28,7 +28,7 @@ const getStyle = (colors: AppColors, dimensions: AppDimensions) =>
     },
   });
 
-const CategoryItem = ({
+const CategoryComponent = ({
   item,
   action,
 }: {
@@ -50,4 +50,4 @@ const CategoryItem = ({
   );
 };
 
-export default CategoryItem;
+export default CategoryComponent;

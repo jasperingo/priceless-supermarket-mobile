@@ -19,8 +19,8 @@ const customerReducer = (
       return {
         ...state,
         loading: false,
-        error: payload?.error ?? null,
-        customerId: payload?.customerId ?? null,
+        error: payload?.error ?? state.error,
+        customerId: payload?.customerId ?? state.customerId,
       };
 
     case CustomerActionType.LOADING:
@@ -35,9 +35,9 @@ const customerReducer = (
         ...state,
         error: null,
         loading: false,
-        customer: payload?.customer ?? null,
         token: payload?.token ?? state.token,
-        customerId: payload?.customerId ?? null,
+        customer: payload?.customer ?? state.customer,
+        customerId: payload?.customerId ?? state.customerId,
       };
 
     default:

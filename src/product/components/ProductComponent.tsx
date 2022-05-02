@@ -1,8 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { RootStackParamList } from '../../../App';
 import { useMoneyFormat } from '../../hooks/formatters';
 import { AppColors, AppDimensions, useAppStyles } from '../../hooks/styles';
 import { usePhotoUrl } from '../../photo';
@@ -38,21 +35,24 @@ const getStyle = (colors: AppColors, dimensions: AppDimensions) =>
     },
   });
 
-const ProductItem = ({ item }: { item: Product }) => {
+const ProductComponent = ({
+  item,
+  action,
+}: {
+  item: Product;
+  action: () => void;
+}) => {
   const styles = useAppStyles(getStyle);
 
   const moneyFormat = useMoneyFormat();
 
   const uri = usePhotoUrl(item.photo?.url as string);
 
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
-
   return (
     <TouchableOpacity
+      onPress={action}
       activeOpacity={0.8}
-      style={styles.container}
-      onPress={() => navigation.navigate('Product', { id: item.id as number })}>
+      style={styles.container}>
       <Image style={styles.image} resizeMode="stretch" source={{ uri }} />
       <Text style={styles.name}>{item.name}</Text>
       <Text style={styles.price}>{moneyFormat(item.price || 0)}</Text>
@@ -60,4 +60,4 @@ const ProductItem = ({ item }: { item: Product }) => {
   );
 };
 
-export default ProductItem;
+export default ProductComponent;

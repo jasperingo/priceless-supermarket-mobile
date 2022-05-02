@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { RootStackParamList } from '../../../App';
 import { AppDimensions, useAppStyles } from '../../hooks/styles';
-import CategoryItem from '../components/CategoryItem';
+import CategoryComponent from '../components/CategoryComponent';
 import CategoryListFooterComponent from '../components/CategoryListFooterComponent';
 import useCategoriesFetch from '../hooks/categoriesFetchHook';
 import useCategories from '../hooks/categoriesHook';
@@ -40,7 +40,7 @@ const CategoriesScreen = () => {
       refreshing={false}
       onRefresh={unfetchCategory}
       renderItem={({ item }) => (
-        <CategoryItem
+        <CategoryComponent
           item={item}
           action={() =>
             navigation.navigate('Search', {

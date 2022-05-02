@@ -66,6 +66,9 @@ const OrdersScreen = () => {
         (error === ErrorCode.NO_NETWORK_CONNECTION && (
           <RetryComponent text="Not_network_connection" action={ordersFetch} />
         )) ||
+        (error === ErrorCode.UNAUTHORIZED && (
+          <RetryComponent text="Authorization_failed" action={ordersFetch} />
+        )) ||
         (error !== null && <RetryComponent action={ordersFetch} />) ||
         (loaded && orders.length === 0 && (
           <EmptyListComponent text="_empty_orders" />
