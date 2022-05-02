@@ -95,7 +95,7 @@ const useOrderCreate = (): ReturnType => {
           type: OrderActionType.FETCHED,
           payload: {
             order,
-            orderId: String(order.id),
+            orderId: order.id,
           },
         });
       } else if (res.status === 401) {

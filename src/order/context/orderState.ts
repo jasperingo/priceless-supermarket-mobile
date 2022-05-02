@@ -14,6 +14,7 @@ export enum OrderActionType {
   UNFETCHED = 'ORDER_UNFETCHED',
   LOADING = 'ORDER_LOADING',
   ERROR = 'ORDER_ERROR',
+  ITEM_FETCHED = 'ORDER_ITEM_FETCHED',
 }
 
 export type OrderAction = {

@@ -39,6 +39,21 @@ const orderReducer = (
         orderId: payload?.orderId ?? null,
       };
 
+    case OrderActionType.ITEM_FETCHED:
+      const newItem = payload?.order?.orderItems?.[0];
+      return {
+        ...state,
+        order: {
+          ...state.order,
+          orderItems: state.order?.orderItems?.map(item => {
+            if (item.id === newItem?.id) {
+              return newItem;
+            }
+            return item;
+          }) as [],
+        },
+      };
+
     default:
       return state;
   }

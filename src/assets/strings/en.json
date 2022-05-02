@@ -36,6 +36,10 @@
 
   "Forgot_password": "Forgot password?",
 
+  "_confirm_sign_out": "Are you sure you want to sign out?",
+
+  "Confirm_sign_out": "Confirm sign out",
+
   "Continue": "Continue",
 
   "State": "State",
@@ -124,9 +128,13 @@
   "Delivery_address": "Delivery address",
 
 
-  "_confirm_sign_out": "Are you sure you want to sign out?",
+  "Confirm_cancel_order_item": "Confirm cancel order item",
 
-  "Confirm_sign_out": "Confirm sign out",
+  "_confirm_cancel_order_item": "Are you sure you want to cancel this order item?",
+
+  "Confirm_fulfill_order_item": "Confirm fulfill order item",
+
+  "_confirm_fulfill_order_item": "Are you sure you have received this order item?",
 
 
   "_empty_categories": "No category found",
