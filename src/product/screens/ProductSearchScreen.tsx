@@ -17,7 +17,9 @@ import useProductsSearch from '../hooks/productsSearchHook';
 const getStyles = (colors: AppColors, dimens: AppDimensions) =>
   StyleSheet.create({
     header: {
-      flexGrow: 0.75,
+      width: '90%',
+      flexDirection: 'row',
+      alignItems: 'center',
     },
 
     wrapper: {
@@ -72,11 +74,10 @@ const ProductSearchScreen = () => {
               navigation.setParams({ q: query, categoryId });
             }}
           />
+          <HeaderButtonComponent icon="funnel" action={() => setFilter(true)} />
         </View>
       ),
-      headerRight: () => (
-        <HeaderButtonComponent icon="funnel" action={() => setFilter(true)} />
-      ),
+      headerTitleAlign: 'left',
     });
   }, [styles, navigation, q, categoryId, unfetchProducts]);
 

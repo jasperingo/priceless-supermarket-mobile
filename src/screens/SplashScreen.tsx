@@ -33,9 +33,12 @@ const getStyles = (colors: AppColors, dimens: AppDimensions) =>
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+      backgroundColor: colors.colorSurface,
     },
 
     image: {
+      resizeMode: 'stretch',
+      margin: dimens.xxLarge,
       marginBottom: dimens.xxLarge,
     },
 

@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
   ToastAndroid,
+  Image,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ErrorCode from '../../errors/ErrorCode';
@@ -22,10 +23,20 @@ import LoadingModalComponent from '../../components/modal/LoadingModalComponent'
 const getStyle = (colors: AppColors, dimensions: AppDimensions) =>
   StyleSheet.create({
     container: {
+      flex: 1,
       padding: dimensions.medium,
+      backgroundColor: colors.colorSurface,
+    },
+
+    image: {
+      width: 80,
+      height: 80,
+      alignSelf: 'center',
+      resizeMode: 'stretch',
     },
 
     name: {
+      alignSelf: 'center',
       padding: dimensions.small,
       fontSize: dimensions.large,
       color: colors.colorOnSurface,
@@ -135,8 +146,12 @@ const AccountScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Image
+        style={styles.image}
+        source={require('../../assets/images/user.png')}
+      />
       <Text style={styles.name}>
-        {t('Welcome')}, {customer?.firstName} {customer?.lastName}.
+        {customer?.firstName} {customer?.lastName}
       </Text>
       <View style={styles.menu}>
         <MenuItem
